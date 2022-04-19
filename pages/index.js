@@ -1,3 +1,4 @@
+import { app } from "@utils/config";
 import Head from "next/head";
 
 export default function Home() {
@@ -12,7 +13,15 @@ export default function Home() {
         <link rel="icon" type="image/png" href="/code.png" />
       </Head>
 
-      <main className="bg-red-200">Test</main>
+      <main>
+        <div className="w-full">
+          <img
+            src={`${app.cloudinaryBaseUrl}/c_fill,g_auto,h_450,w_1920/v1649599012/web/hero_banner_codedeck_nmuqok.jpg`}
+            alt=""
+            className="mx-auto"
+          />
+        </div>
+      </main>
     </div>
   );
 }

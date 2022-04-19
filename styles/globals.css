@@ -18,3 +18,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.global-container {
+  @apply max-w-screen-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8;
+}
+
+.transition-200 {
+  @apply transition duration-200 ease-in-out;
+}
