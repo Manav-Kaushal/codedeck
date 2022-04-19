@@ -157,7 +157,7 @@ export const Header = () => {
       </Transition.Root>
 
       <header className="relative">
-        <nav aria-label="Top">
+        <nav className="relative" aria-label="Top">
           {/* Top navigation */}
           <div className="bg-gray-900">
             <div className="max-w-screen-2xl mx-auto h-10 px-4 flex items-center justify-end sm:px-6 lg:px-8">
@@ -187,7 +187,7 @@ export const Header = () => {
                   <div className="hidden lg:flex-1 lg:flex lg:items-center">
                     <Link href="/">
                       <a>
-                        <h1 className="text-3xl text-blue-600 font-semibold select-none">
+                        <h1 className="text-2xl font-semibold select-none">
                           CodeDeck
                         </h1>
                       </a>
