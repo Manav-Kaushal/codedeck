@@ -47,7 +47,7 @@ export const Header = () => {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
+            <div className="relative max-w-full w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
               <div className="px-4 pt-5 pb-2 flex">
                 <button
                   type="button"
@@ -106,12 +106,6 @@ export const Header = () => {
                               />
                               {item.name}
                             </a>
-                            <p
-                              aria-hidden="true"
-                              className="mt-1 text-sm text-gray-500"
-                            >
-                              Shop now
-                            </p>
                           </div>
                         ))}
                       </div>
@@ -187,7 +181,7 @@ export const Header = () => {
                   <div className="hidden lg:flex-1 lg:flex lg:items-center">
                     <Link href="/">
                       <a>
-                        <h1 className="text-2xl font-semibold select-none">
+                        <h1 className="text-2xl text-primary font-semibold select-none">
                           CodeDeck
                         </h1>
                       </a>
@@ -224,7 +218,7 @@ export const Header = () => {
                                   leaveFrom="opacity-100"
                                   leaveTo="opacity-0"
                                 >
-                                  <Popover.Panel className="absolute top-full inset-x-0 text-sm text-gray-500">
+                                  <Popover.Panel className="absolute top-full inset-x-0 text-sm text-gray-500 z-30">
                                     {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
                                     <div
                                       className="absolute inset-0 top-1/2 bg-white shadow"
@@ -248,7 +242,7 @@ export const Header = () => {
                                               </div>
                                               <a
                                                 href={item.href}
-                                                className="mt-4 block font-medium text-gray-900"
+                                                className="mt-4 block font-medium text-gray-900 text-lg"
                                               >
                                                 <span
                                                   className="absolute z-10 inset-0"
@@ -256,12 +250,6 @@ export const Header = () => {
                                                 />
                                                 {item.name}
                                               </a>
-                                              <p
-                                                aria-hidden="true"
-                                                className="mt-1"
-                                              >
-                                                Shop now
-                                              </p>
                                             </div>
                                           ))}
                                         </div>
@@ -310,12 +298,14 @@ export const Header = () => {
 
                   {/* Logo (lg-) */}
                   <a href="#" className="lg:hidden">
-                    <span className="sr-only">Workflow</span>
-                    <img
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt=""
-                      className="h-8 w-auto"
-                    />
+                    <span className="sr-only">CodeDeck</span>
+                    <Link href="/">
+                      <a>
+                        <h1 className="text-2xl text-primary font-semibold select-none">
+                          CodeDeck
+                        </h1>
+                      </a>
+                    </Link>
                   </a>
 
                   <div className="flex-1 flex items-center justify-end">
@@ -327,24 +317,6 @@ export const Header = () => {
                     </a>
 
                     <div className="flex items-center lg:ml-8">
-                      {/* Help */}
-                      <a
-                        href="#"
-                        className="p-2 text-gray-400 hover:text-gray-500 lg:hidden"
-                      >
-                        <span className="sr-only">Help</span>
-                        <QuestionMarkCircleIcon
-                          className="w-6 h-6"
-                          aria-hidden="true"
-                        />
-                      </a>
-                      <a
-                        href="#"
-                        className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                      >
-                        Help
-                      </a>
-
                       {/* Cart */}
                       <div className="ml-4 flow-root lg:ml-8">
                         <a

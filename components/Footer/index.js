@@ -14,7 +14,9 @@ export const Footer = () => {
           <div className="space-y-8 xl:col-span-1">
             <Link href="/">
               <a>
-                <h1 className="text-2xl font-semibold select-none">CodeDeck</h1>
+                <h1 className="text-2xl text-primary font-semibold select-none">
+                  CodeDeck
+                </h1>
               </a>
             </Link>
             <div className="flex space-x-6">
