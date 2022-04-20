@@ -37,6 +37,10 @@ a {
   @apply transition duration-200 ease-in-out;
 }
 
-.btn {
+.btn-ghost {
   @apply text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  rounded-lg text-sm px-4 py-2 text-center;
+}
+
+.btn-black {
+  @apply text-white border border-gray-700 bg-gray-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  rounded-lg text-sm px-4 py-2 text-center;
 }

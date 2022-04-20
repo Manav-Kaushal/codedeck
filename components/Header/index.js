@@ -1,10 +1,12 @@
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   MenuIcon,
-  QuestionMarkCircleIcon,
+  MinusIcon,
+  PlusIcon,
   SearchIcon,
   ShoppingBagIcon,
+  ShoppingCartIcon,
   XIcon,
 } from "@heroicons/react/outline";
 import { navigation } from "@utils/Mocks/Header";
@@ -15,7 +17,18 @@ function classNames(...classes) {
 }
 
 export const Header = () => {
+  const cartRef = useRef();
   const [open, setOpen] = useState(false);
+
+  function toggleCart() {
+    if (cartRef.current.classList.contains("opacity-0")) {
+      cartRef.current.classList.remove("opacity-0");
+      cartRef.current.classList.add("opacity-100");
+    } else if (!cartRef.current.classList.contains("opacity-0")) {
+      cartRef.current.classList.remove("opacity-100");
+      cartRef.current.classList.add("opacity-0");
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -119,7 +132,7 @@ export const Header = () => {
                   <div key={page.name} className="flow-root">
                     <a
                       href={page.href}
-                      className="-m-2 p-2 block font-medium text-gray-900"
+                      className="-m-2 p-2 block font-medium text-gray-900 transition-200 hover:text-primary"
                     >
                       {page.name}
                     </a>
@@ -200,8 +213,8 @@ export const Header = () => {
                                   <Popover.Button
                                     className={classNames(
                                       open
-                                        ? "border-indigo-600 text-indigo-600"
-                                        : "border-transparent text-gray-700 hover:text-gray-800",
+                                        ? "border-primary text-primary"
+                                        : "border-transparent text-gray-700 hover:text-primary",
                                       "relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px"
                                     )}
                                   >
@@ -266,7 +279,7 @@ export const Header = () => {
                           <a
                             key={page.name}
                             href={page.href}
-                            className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                            className="flex items-center text-sm font-medium text-gray-700 transition-200 hover:text-primary"
                           >
                             {page.name}
                           </a>
@@ -308,32 +321,87 @@ export const Header = () => {
                     </Link>
                   </a>
 
-                  <div className="flex-1 flex items-center justify-end">
-                    <a
-                      href="#"
-                      className="hidden text-sm font-medium text-gray-700 hover:text-gray-800 lg:block"
-                    >
-                      Search
-                    </a>
+                  <div className="flex-1 flex items-center justify-end space-x-4">
+                    <SearchIcon className="w-7 h-7 text-gray-400 cursor-pointer transition-200 hover:text-primary" />
 
-                    <div className="flex items-center lg:ml-8">
+                    <div className="relative flex items-center select-none">
                       {/* Cart */}
-                      <div className="ml-4 flow-root lg:ml-8">
-                        <a
-                          href="#"
-                          className="group -m-2 p-2 flex items-center"
-                        >
+                      <div className="p-2 cursor-pointer">
+                        <div className="relative group flex items-center">
                           <ShoppingBagIcon
-                            className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                            className="flex-shrink-0 h-7 w-7 transition-200 text-gray-400 group-hover:text-primary"
                             aria-hidden="true"
+                            onClick={toggleCart}
                           />
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                          <span className="text-[10px] bg-primary p-[10px] text-white font-bold w-4 h-4 flex items-center justify-center rounded-sm">
                             0
                           </span>
                           <span className="sr-only">
                             items in cart, view bag
                           </span>
-                        </a>
+                        </div>
+                      </div>
+
+                      {/* Flyout cart */}
+                      <div
+                        className="sidebar absolute top-[45px] right-0 bg-white p-4 w-[320px] shadow-lg transition-opacity opacity-0 z-10 select-none"
+                        ref={cartRef}
+                      >
+                        <div className="cart-header flex justify-between items-center border-b pb-2">
+                          <h2 className="font-bold">Cart</h2>
+                          <span>
+                            <XIcon
+                              className="w-5 h-5 cursor-pointer transition-200 text-gray-600 hover:text-primary"
+                              aria-hidden="true"
+                              onClick={toggleCart}
+                            />
+                          </span>
+                        </div>
+                        <div className="mt-2">
+                          <table width="100%" className="font-bold">
+                            <tr>
+                              <td width="50%" align="left">
+                                Item
+                              </td>
+                              <td width="30%" align="center">
+                                Qty.
+                              </td>
+                              <td width="20%" align="right">
+                                Total
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div className="border-b mt-2 pb-4">
+                          <table width="100%">
+                            <tr>
+                              <td width="50%">
+                                <div className="line-clamp-2">Tshirt</div>
+                              </td>
+                              <td width="30%" align="center">
+                                <MinusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
+                                <span className="mx-2">1</span>
+                                <PlusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
+                              </td>
+                              <td width="20%" align="right">
+                                ₹255
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div className="flex justify-between mt-2">
+                          <b className="bold">Total</b>
+                          <b>₹1235</b>
+                        </div>
+                        <div className="flex items-center justify-between space-x-4 mt-5">
+                          <button className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200">
+                            <span className="text-base">Clear Cart</span>
+                          </button>
+                          <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
+                            <ShoppingCartIcon className="w-[18px] h-[18px]" />
+                            <span className="text-base">Checkout</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
