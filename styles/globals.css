@@ -38,9 +38,21 @@ a {
 }
 
 .btn-ghost {
-  @apply text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  rounded-lg text-sm px-4 py-2 text-center;
+  @apply text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-md text-sm px-4 py-2 text-center disabled:bg-gray-300 disabled:border-gray-300 disabled:cursor-not-allowed disabled:text-gray-500 disabled:hover:text-gray-500;
 }
 
 .btn-black {
-  @apply text-white border border-gray-700 bg-gray-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  rounded-lg text-sm px-4 py-2 text-center;
+  @apply text-white border border-gray-700 bg-gray-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300  rounded-md text-sm px-4 py-2 text-center;
+}
+
+/* Remove arrows on input number fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
