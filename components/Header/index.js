@@ -17,18 +17,8 @@ function classNames(...classes) {
 }
 
 export const Header = () => {
-  const cartRef = useRef();
+  const [isCartShowing, setIsCartShowing] = useState(false);
   const [open, setOpen] = useState(false);
-
-  function toggleCart() {
-    if (cartRef.current.classList.contains("opacity-0")) {
-      cartRef.current.classList.remove("opacity-0");
-      cartRef.current.classList.add("opacity-100");
-    } else if (!cartRef.current.classList.contains("opacity-0")) {
-      cartRef.current.classList.remove("opacity-100");
-      cartRef.current.classList.add("opacity-0");
-    }
-  }
 
   return (
     <div className="bg-white">
@@ -186,7 +176,7 @@ export const Header = () => {
           </div>
 
           {/* Secondary navigation */}
-          <div className="bg-white">
+          <div className="bg-white sticky top-0">
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="border-b border-gray-200">
                 <div className="h-16 flex items-center justify-between">
@@ -203,7 +193,7 @@ export const Header = () => {
 
                   <div className="hidden h-full lg:flex">
                     {/* Flyout menus */}
-                    <Popover.Group className="px-4 bottom-0 inset-x-0">
+                    <Popover.Group className="px-4 bottom-0 inset-x-0 ">
                       <div className="h-full flex justify-center space-x-8">
                         {navigation.categories.map((category) => (
                           <Popover key={category.name} className="flex">
@@ -232,7 +222,6 @@ export const Header = () => {
                                   leaveTo="opacity-0"
                                 >
                                   <Popover.Panel className="absolute top-full inset-x-0 text-sm text-gray-500 z-30">
-                                    {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
                                     <div
                                       className="absolute inset-0 top-1/2 bg-white shadow"
                                       aria-hidden="true"
@@ -331,7 +320,7 @@ export const Header = () => {
                           <ShoppingBagIcon
                             className="flex-shrink-0 h-7 w-7 transition-200 text-gray-400 group-hover:text-primary"
                             aria-hidden="true"
-                            onClick={toggleCart}
+                            onClick={() => setIsCartShowing(!isCartShowing)}
                           />
                           <span className="text-[10px] bg-primary p-[10px] text-white font-bold w-4 h-4 flex items-center justify-center rounded-sm">
                             0
@@ -343,66 +332,74 @@ export const Header = () => {
                       </div>
 
                       {/* Flyout cart */}
-                      <div
-                        className="sidebar absolute top-[45px] right-0 bg-white p-4 w-[320px] shadow-lg transition-opacity opacity-0 z-10 select-none"
-                        ref={cartRef}
+                      <Transition
+                        as={Fragment}
+                        show={isCartShowing}
+                        enter="transition-opacity duration-75"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="transition-opacity duration-150"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                       >
-                        <div className="cart-header flex justify-between items-center border-b pb-2">
-                          <h2 className="font-bold">Cart</h2>
-                          <span>
-                            <XIcon
-                              className="w-5 h-5 cursor-pointer transition-200 text-gray-600 hover:text-primary"
-                              aria-hidden="true"
-                              onClick={toggleCart}
-                            />
-                          </span>
+                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[320px] shadow-lg z-10 select-none">
+                          <div className="cart-header flex justify-between items-center border-b pb-2">
+                            <h2 className="font-bold">Cart</h2>
+                            <span>
+                              <XIcon
+                                className="w-5 h-5 cursor-pointer transition-200 text-gray-600 hover:text-primary"
+                                aria-hidden="true"
+                                onClick={() => setIsCartShowing(false)}
+                              />
+                            </span>
+                          </div>
+                          <div className="mt-2">
+                            <table width="100%" className="font-bold">
+                              <tr>
+                                <td width="50%" align="left">
+                                  Item
+                                </td>
+                                <td width="30%" align="center">
+                                  Qty.
+                                </td>
+                                <td width="20%" align="right">
+                                  Total
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div className="border-b mt-2 pb-4">
+                            <table width="100%">
+                              <tr>
+                                <td width="50%">
+                                  <div className="line-clamp-2">Tshirt</div>
+                                </td>
+                                <td width="30%" align="center">
+                                  <MinusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
+                                  <span className="mx-2">1</span>
+                                  <PlusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
+                                </td>
+                                <td width="20%" align="right">
+                                  ₹255
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div className="flex justify-between mt-2">
+                            <b className="bold">Total</b>
+                            <b>₹1235</b>
+                          </div>
+                          <div className="flex items-center justify-between space-x-4 mt-5">
+                            <button className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200">
+                              <span className="text-base">Clear Cart</span>
+                            </button>
+                            <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
+                              <ShoppingCartIcon className="w-[18px] h-[18px]" />
+                              <span className="text-base">Checkout</span>
+                            </button>
+                          </div>
                         </div>
-                        <div className="mt-2">
-                          <table width="100%" className="font-bold">
-                            <tr>
-                              <td width="50%" align="left">
-                                Item
-                              </td>
-                              <td width="30%" align="center">
-                                Qty.
-                              </td>
-                              <td width="20%" align="right">
-                                Total
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-                        <div className="border-b mt-2 pb-4">
-                          <table width="100%">
-                            <tr>
-                              <td width="50%">
-                                <div className="line-clamp-2">Tshirt</div>
-                              </td>
-                              <td width="30%" align="center">
-                                <MinusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
-                                <span className="mx-2">1</span>
-                                <PlusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
-                              </td>
-                              <td width="20%" align="right">
-                                ₹255
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-                        <div className="flex justify-between mt-2">
-                          <b className="bold">Total</b>
-                          <b>₹1235</b>
-                        </div>
-                        <div className="flex items-center justify-between space-x-4 mt-5">
-                          <button className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200">
-                            <span className="text-base">Clear Cart</span>
-                          </button>
-                          <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
-                            <ShoppingCartIcon className="w-[18px] h-[18px]" />
-                            <span className="text-base">Checkout</span>
-                          </button>
-                        </div>
-                      </div>
+                      </Transition>
                     </div>
                   </div>
                 </div>

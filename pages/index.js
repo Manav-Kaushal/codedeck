@@ -19,7 +19,7 @@ export default function Home() {
           <img
             src={`${app.cloudinaryBaseUrl}/c_fill,g_auto,h_645,w_1920/v1649599012/web/hero_banner_codedeck_nmuqok.jpg`}
             alt=""
-            className="mx-auto"
+            className="mx-auto min-h-[345px] object-cover"
           />
         </section>
 
