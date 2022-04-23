@@ -71,7 +71,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Slug = () => {
+const Slug = ({ addToCart }) => {
   const router = useRouter();
   const { query } = router;
   const [open, setOpen] = useState(false);
@@ -244,7 +244,6 @@ const Slug = () => {
                       autoComplete="postal-code"
                       className="focus:outline-none focus:ring-0 focus:border-gray-800 relative block w-56 rounded-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
                       placeholder="ZIP / Postal code"
-                      required
                     />
                     <button
                       type="button"
@@ -271,6 +270,17 @@ const Slug = () => {
                   <button
                     type="submit"
                     className="max-w-xs flex-1 btn-black sm:w-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(
+                        query.slug,
+                        1,
+                        499,
+                        "Tshirt (XL, Red)",
+                        "XL",
+                        "Red"
+                      );
+                    }}
                   >
                     Add to bag
                   </button>

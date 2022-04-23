@@ -11,17 +11,31 @@ import {
 } from "@heroicons/react/outline";
 import { navigation } from "@utils/Mocks/Header";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { numberFormat } from "@utils/helpers";
+import { EmptyCart } from "@components/EmptyCart";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const Header = () => {
-  const [isCartShowing, setIsCartShowing] = useState(false);
+export const Header = ({
+  cart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  subTotal,
+}) => {
+  const [isCartShowing, setIsCartShowing] = useState(
+    Object.keys(cart).length === 0 ? false : true
+  );
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const { query } = router;
 
   return (
-    <div className="bg-white">
+    <div className="bg-white sticky top-0 z-50 shadow-sm">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -176,7 +190,7 @@ export const Header = () => {
           </div>
 
           {/* Secondary navigation */}
-          <div className="bg-white sticky top-0">
+          <div className="bg-white">
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="border-b border-gray-200">
                 <div className="h-16 flex items-center justify-between">
@@ -223,11 +237,11 @@ export const Header = () => {
                                 >
                                   <Popover.Panel className="absolute top-full inset-x-0 text-sm text-gray-500 z-30">
                                     <div
-                                      className="absolute inset-0 top-1/2 bg-white shadow"
+                                      className="absolute inset-0 top-1/2 bg-white shadow-lg"
                                       aria-hidden="true"
                                     />
 
-                                    <div className="relative bg-white">
+                                    <div className="relative bg-gray-50">
                                       <div className="max-w-screen-2xl mx-auto px-8">
                                         <div className="grid grid-cols-4 gap-y-10 gap-x-8 py-16">
                                           {category.featured.map((item) => (
@@ -323,7 +337,7 @@ export const Header = () => {
                             onClick={() => setIsCartShowing(!isCartShowing)}
                           />
                           <span className="text-[10px] bg-primary p-[10px] text-white font-bold w-4 h-4 flex items-center justify-center rounded-sm">
-                            0
+                            10
                           </span>
                           <span className="sr-only">
                             items in cart, view bag
@@ -342,62 +356,132 @@ export const Header = () => {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[320px] shadow-lg z-10 select-none">
-                          <div className="cart-header flex justify-between items-center border-b pb-2">
-                            <h2 className="font-bold">Cart</h2>
-                            <span>
-                              <XIcon
-                                className="w-5 h-5 cursor-pointer transition-200 text-gray-600 hover:text-primary"
-                                aria-hidden="true"
-                                onClick={() => setIsCartShowing(false)}
-                              />
-                            </span>
-                          </div>
-                          <div className="mt-2">
-                            <table width="100%" className="font-bold">
-                              <tr>
-                                <td width="50%" align="left">
-                                  Item
-                                </td>
-                                <td width="30%" align="center">
-                                  Qty.
-                                </td>
-                                <td width="20%" align="right">
-                                  Total
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          <div className="border-b mt-2 pb-4">
-                            <table width="100%">
-                              <tr>
-                                <td width="50%">
-                                  <div className="line-clamp-2">Tshirt</div>
-                                </td>
-                                <td width="30%" align="center">
-                                  <MinusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
-                                  <span className="mx-2">1</span>
-                                  <PlusIcon className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer" />
-                                </td>
-                                <td width="20%" align="right">
-                                  ₹255
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          <div className="flex justify-between mt-2">
-                            <b className="bold">Total</b>
-                            <b>₹1235</b>
-                          </div>
-                          <div className="flex items-center justify-between space-x-4 mt-5">
-                            <button className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200">
-                              <span className="text-base">Clear Cart</span>
-                            </button>
-                            <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
-                              <ShoppingCartIcon className="w-[18px] h-[18px]" />
-                              <span className="text-base">Checkout</span>
-                            </button>
-                          </div>
+                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[320px] shadow-xl z-50 select-none">
+                          {Object.keys(cart).length === 0 && (
+                            <div>
+                              <EmptyCart size="sm" />
+                            </div>
+                          )}
+                          {Object.keys(cart).length !== 0 && (
+                            <>
+                              <div className="cart-header flex justify-between items-center border-b pb-2">
+                                <h2 className="font-bold">Cart</h2>
+                                <span>
+                                  <XIcon
+                                    className="w-5 h-5 cursor-pointer transition-200 text-gray-600 hover:text-primary"
+                                    aria-hidden="true"
+                                    onClick={() => setIsCartShowing(false)}
+                                  />
+                                </span>
+                              </div>
+                              <div className="mt-2">
+                                <table width="100%" className="font-bold">
+                                  <tr>
+                                    <td width="50%" align="left">
+                                      Item
+                                    </td>
+                                    <td width="30%" align="center">
+                                      Qty.
+                                    </td>
+                                    <td width="20%" align="right">
+                                      Total
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div className="mt-2 pb-2">
+                                <table width="100%">
+                                  {Object.keys(cart).map((k) => {
+                                    return (
+                                      <tr key={k}>
+                                        <td width="50%">
+                                          <div className="line-clamp-2">
+                                            {cart[k].name}
+                                          </div>
+                                        </td>
+                                        <td width="30%" align="center">
+                                          <MinusIcon
+                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                                            onClick={() =>
+                                              removeFromCart(
+                                                k,
+                                                1,
+                                                cart[k].price,
+                                                cart[k].name,
+                                                cart[k].size,
+                                                cart[k].variant
+                                              )
+                                            }
+                                          />
+                                          <span className="mx-2">
+                                            {cart[k].qty}
+                                          </span>
+                                          <PlusIcon
+                                            onClick={() =>
+                                              addToCart(
+                                                query.slug,
+                                                1,
+                                                499,
+                                                "Tshirt (XL, Red)",
+                                                "XL",
+                                                "Red"
+                                              )
+                                            }
+                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                                          />
+                                        </td>
+                                        <td width="20%" align="right">
+                                          {cart[k].price}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </table>
+                              </div>
+                              {Object.keys(cart).length !== 0 && (
+                                <div className="flex justify-between mt-2 border-t pt-4">
+                                  <b className="bold">Subtotal</b>
+                                  <b>{numberFormat(subTotal)}</b>
+                                </div>
+                              )}
+                              <div className="flex items-center justify-between space-x-4 mt-5">
+                                {Object.keys(cart).length === 0 ? (
+                                  <>
+                                    <button
+                                      className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200"
+                                      onClick={clearCart}
+                                    >
+                                      <span className="text-base">
+                                        Shop Now
+                                      </span>
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      className="btn-ghost w-full flex items-center justify-center space-x-1 transition-200"
+                                      onClick={clearCart}
+                                    >
+                                      <span className="text-base">
+                                        Clear Cart
+                                      </span>
+                                    </button>
+                                    <Link href={"/checkout"} passHref>
+                                      <button
+                                        className="btn-black w-full flex items-center justify-center space-x-1 transition-200"
+                                        onClick={() => setIsCartShowing(false)}
+                                      >
+                                        <ShoppingCartIcon className="w-[18px] h-[18px]" />
+                                        <span className="text-base">
+                                          Checkout
+                                        </span>
+                                      </button>
+                                    </Link>
+                                  </>
+                                )}
+                              </div>
+                            </>
+                          )}
                         </div>
                       </Transition>
                     </div>

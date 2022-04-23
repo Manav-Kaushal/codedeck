@@ -37,7 +37,7 @@ export default function Home() {
                       className="relative flex-1 flex flex-col justify-center bg-white py-6 px-4 text-center focus:z-10"
                     >
                       <p className="text-sm text-gray-500">{offer.name}</p>
-                      <p className="font-semibold text-gray-900">
+                      <p className="font-semibold text-primary">
                         {offer.description}
                       </p>
                     </a>
@@ -49,7 +49,7 @@ export default function Home() {
             <div className="relative">
               <div
                 aria-hidden="true"
-                className="hidden absolute w-1/2 h-full bg-gray-100 lg:block"
+                className="hidden absolute w-1/2 h-full bg-primary/10 lg:block"
               />
               <div className="relative bg-[#EFEFEF] lg:bg-transparent">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2">

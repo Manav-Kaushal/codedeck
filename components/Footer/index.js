@@ -5,7 +5,10 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="bg-white" aria-labelledby="footer-heading">
+    <footer
+      className="bg-primary/80 text-white"
+      aria-labelledby="footer-heading"
+    >
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -14,7 +17,7 @@ export const Footer = () => {
           <div className="space-y-8 xl:col-span-1">
             <Link href="/">
               <a>
-                <h1 className="text-2xl text-primary font-semibold select-none">
+                <h1 className="text-2xl text-white font-semibold select-none">
                   CodeDeck
                 </h1>
               </a>
@@ -24,7 +27,7 @@ export const Footer = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-200 hover:text-white"
                 >
                   <span className="sr-only">{item.name}</span>
                   <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -35,7 +38,7 @@ export const Footer = () => {
           <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                   Solutions
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
@@ -43,7 +46,7 @@ export const Footer = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
+                        className="text-base text-gray-300 hover:text-white transition-200"
                       >
                         {item.name}
                       </a>
@@ -52,7 +55,7 @@ export const Footer = () => {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                   Support
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
@@ -60,7 +63,7 @@ export const Footer = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
+                        className="text-base text-gray-300 hover:text-white transition-200"
                       >
                         {item.name}
                       </a>
@@ -71,7 +74,7 @@ export const Footer = () => {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                   Company
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
@@ -79,7 +82,7 @@ export const Footer = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
+                        className="text-base text-gray-300 hover:text-white transition-200"
                       >
                         {item.name}
                       </a>
@@ -88,7 +91,7 @@ export const Footer = () => {
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                <h3 className="text-sm font-semibold text-white tracking-wider uppercase">
                   Legal
                 </h3>
                 <ul role="list" className="mt-4 space-y-4">
@@ -96,7 +99,7 @@ export const Footer = () => {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
+                        className="text-base text-gray-300 hover:text-white transition-200"
                       >
                         {item.name}
                       </a>
@@ -108,7 +111,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
-          <p className="text-base text-gray-400 xl:text-center">
+          <p className="text-base text-gray-200 xl:text-center">
             &copy; {dayjs(Date.now()).format("YYYY")} {app.name}, Inc. All
             rights reserved.
           </p>
