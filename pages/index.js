@@ -1,19 +1,14 @@
+import { SeoContainer } from "@components/SeoContainer";
 import { app } from "@utils/config";
 import { offers } from "@utils/Mocks/HomeData";
-import Head from "next/head";
 
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Codedeck | Best coding merchandise to buy online!</title>
-        <meta
-          name="description"
-          content="Best coding merchandise to buy online!"
-        />
-        <link rel="icon" type="image/png" href="/code.png" />
-      </Head>
-
+      <SeoContainer
+        title="Best coding merchandise to buy online!"
+        description="Best coding merchandise to buy online!"
+      />
       <main>
         <section className="w-full">
           <img

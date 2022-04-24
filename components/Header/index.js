@@ -8,6 +8,7 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   XIcon,
+  UserCircleIcon,
 } from "@heroicons/react/outline";
 import { navigation } from "@utils/Mocks/Header";
 import Link from "next/link";
@@ -146,20 +147,16 @@ export const Header = ({
 
               <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                 <div className="flow-root">
-                  <a
-                    href="#"
-                    className="-m-2 p-2 block font-medium text-gray-900"
-                  >
+                  <Link href="/auth/register">
+                    <a className="-m-2 p-2 block font-medium text-gray-900"></a>
                     Create an account
-                  </a>
+                  </Link>
                 </div>
                 <div className="flow-root">
-                  <a
-                    href="#"
-                    className="-m-2 p-2 block font-medium text-gray-900"
-                  >
+                  <Link href="/auth/login">
+                    <a className="-m-2 p-2 block font-medium text-gray-900"></a>
                     Sign in
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -172,19 +169,17 @@ export const Header = ({
           {/* Top navigation */}
           <div className="bg-gray-900">
             <div className="max-w-screen-2xl mx-auto h-10 px-4 flex items-center justify-end sm:px-6 lg:px-8">
-              <div className="flex items-center space-x-6">
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Sign in
-                </a>
-                <a
-                  href="#"
-                  className="text-sm font-medium text-white hover:text-gray-100"
-                >
-                  Create an account
-                </a>
+              <div className="flex items-center space-x-6 ">
+                <Link href="/auth/login">
+                  <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                    Sign in
+                  </a>
+                </Link>
+                <Link href="/auth/register">
+                  <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                    Create an account
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -324,19 +319,19 @@ export const Header = ({
                     </Link>
                   </a>
 
-                  <div className="flex-1 flex items-center justify-end space-x-4">
-                    <SearchIcon className="w-7 h-7 text-gray-400 cursor-pointer transition-200 hover:text-primary" />
+                  <div className="flex-1 flex items-center justify-end space-x-3">
+                    <SearchIcon className="w-7 h-7 text-gray-400 cursor-pointer transition-200 hover:text-primary hidden lg:inline-flex" />
 
                     <div className="relative flex items-center select-none">
                       {/* Cart */}
                       <div className="p-2 cursor-pointer">
                         <div className="relative group flex items-center">
                           <ShoppingBagIcon
-                            className="flex-shrink-0 h-7 w-7 transition-200 text-gray-400 group-hover:text-primary"
+                            className="flex-shrink-0 h-8 w-8 transition-200 text-gray-400 group-hover:text-primary"
                             aria-hidden="true"
                             onClick={() => setIsCartShowing(!isCartShowing)}
                           />
-                          <span className="text-[10px] bg-primary p-[10px] text-white font-bold w-4 h-4 flex items-center justify-center rounded-sm">
+                          <span className="absolute top-1/2 left-1/2 transform -translate-y-[15%] -translate-x-1/2 text-[10px] font-bold text-gray-400 group-hover:text-primary transition-200">
                             10
                           </span>
                           <span className="sr-only">
