@@ -3,8 +3,9 @@ import Product from "../../models/Product";
 
 const handler = async (req, res) => {
   if (req.method == "POST") {
+    let newProduct;
     for (let i = 0; i < req.body.length; i++) {
-      let newProduct = new Product({
+      newProduct = new Product({
         title: req.body[i].title,
         slug: req.body[i].slug,
         description: req.body[i].description,
@@ -17,7 +18,7 @@ const handler = async (req, res) => {
       });
       await newProduct.save();
     }
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, data: [newProduct] });
   } else {
     res
       .status(400)
