@@ -2,6 +2,7 @@ import { Layout } from "@components/Layout";
 import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import toast, { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -67,26 +68,31 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <Layout>
-      <Layout.Header
-        key={subTotal}
-        cart={cart}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        subTotal={subTotal}
-      />
-      <Component
-        cart={cart}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        clearCart={clearCart}
-        subTotal={subTotal}
-        {...pageProps}
-      />
-      <Layout.Footer />
-      <Toaster position="top-center" reverseOrder={false} gutter={8} />
-    </Layout>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <Layout>
+        <Layout.Header
+          key={subTotal}
+          cart={cart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          subTotal={subTotal}
+        />
+        <Component
+          cart={cart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          clearCart={clearCart}
+          subTotal={subTotal}
+          {...pageProps}
+        />
+        <Layout.Footer />
+        <Toaster position="top-center" reverseOrder={false} gutter={8} />
+      </Layout>
+    </>
   );
 }
 

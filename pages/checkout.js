@@ -61,7 +61,7 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
       <div className="bg-gray-100">
         <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:max-w-screen-2xl lg:px-8">
           <h2 className="sr-only">Checkout</h2>
-          <h2 className="font-semibold text-xl sm:text-3xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
             Your Shopping Cart
           </h2>
 
@@ -513,10 +513,7 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                 )}
                 <div className="flex items-center justify-center space-x-4 mt-5">
                   <Link href={"/checkout"} passHref>
-                    <button
-                      className="btn-black w-full flex items-center justify-center space-x-1 transition-200"
-                      onClick={() => setIsCartShowing(false)}
-                    >
+                    <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
                       <ShoppingCartIcon className="w-[18px] h-[18px]" />
                       <span className="text-base">Checkout</span>
                     </button>
