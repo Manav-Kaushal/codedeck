@@ -42,7 +42,7 @@ export const Header = ({
         <Dialog
           as="div"
           className="fixed inset-0 flex z-40 lg:hidden"
-          onClose={setOpen}
+          onClose={() => setOpen(false)}
         >
           <Transition.Child
             as={Fragment}
@@ -148,14 +148,16 @@ export const Header = ({
               <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                 <div className="flow-root">
                   <Link href="/auth/register">
-                    <a className="-m-2 p-2 block font-medium text-gray-900"></a>
-                    Create an account
+                    <a className="-m-2 p-2 block font-medium text-gray-900">
+                      Create an account
+                    </a>
                   </Link>
                 </div>
                 <div className="flow-root">
                   <Link href="/auth/login">
-                    <a className="-m-2 p-2 block font-medium text-gray-900"></a>
-                    Sign in
+                    <a className="-m-2 p-2 block font-medium text-gray-900">
+                      Sign in
+                    </a>
                   </Link>
                 </div>
               </div>
@@ -291,7 +293,7 @@ export const Header = ({
                     <button
                       type="button"
                       className="-ml-2 bg-white p-2 rounded-md text-gray-400"
-                      onClick={() => setOpen(true)}
+                      onClick={() => setOpen(!open)}
                     >
                       <span className="sr-only">Open menu</span>
                       <MenuIcon className="h-6 w-6" aria-hidden="true" />

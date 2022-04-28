@@ -7,7 +7,8 @@ import {
   StarIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { SeoContainer } from "@components/SeoContainer";
 
 const product = {
   name: "Zip Tote Basket",
@@ -96,6 +97,7 @@ const Slug = ({ addToCart }) => {
 
   return (
     <>
+      <SeoContainer title={product.name} description={product.description} />
       <main className="max-w-7xl mx-auto sm:pt-16 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto lg:max-w-none">
           {/* Product */}
