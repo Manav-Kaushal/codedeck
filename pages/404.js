@@ -12,15 +12,14 @@ const Index = () => {
           Page not found
         </h1>
         <p className="mt-2 text-base text-gray-500">
-          Sorry, we couldn’t find the page you’re looking for.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <div className="mt-6">
-          <a
-            href="/"
-            className="text-base font-medium text-primary/80 hover:text-primary transition-200"
-          >
-            Go back home<span aria-hidden="true"> &rarr;</span>
-          </a>
+          <Link href="/">
+            <a className="text-base font-medium text-primary/80 hover:text-primary transition-200">
+              Go back home<span aria-hidden="true"> &rarr;</span>
+            </a>
+          </Link>
         </div>
       </div>
     </main>

@@ -105,13 +105,14 @@ const Wallets = () => {
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mt-6 grid grid-cols-2 gap-y-8 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-6">
-        {wallets.map((wallet) => (
+        {/* {wallets.map((wallet) => (
           <Link href={`/product-view/${wallet?.href}`}>
             <a>
               <ProductCard data={wallet} category="wallets" />
             </a>
           </Link>
-        ))}
+        ))} */}
+        Test
       </div>
     </div>
   );

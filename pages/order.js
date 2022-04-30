@@ -54,7 +54,7 @@ const Order = () => {
               Thank you!
             </h1>
             <p className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              It's on the way!
+              It&apos;s on the way!
             </p>
             <p className="mt-2 text-base text-gray-500">
               Your order is confirmed and will be shipped soon.

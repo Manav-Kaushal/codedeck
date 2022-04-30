@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 
 export const ProductCard = ({ data, category }) => {
-  console.log({ data });
   return (
     <div className="group relative mx-auto select-none">
       {data.discountPercentage && data.discountPercentage > 0 && (
