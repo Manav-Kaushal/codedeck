@@ -253,16 +253,15 @@ export const Header = ({
                                                   className="object-center object-cover"
                                                 />
                                               </div>
-                                              <a
-                                                href={item.href}
-                                                className="mt-4 block font-medium text-gray-900 text-lg"
-                                              >
-                                                <span
-                                                  className="absolute z-10 inset-0"
-                                                  aria-hidden="true"
-                                                />
-                                                {item.name}
-                                              </a>
+                                              <Link href={item.href}>
+                                                <a className="mt-4 block font-medium text-gray-900 text-lg">
+                                                  <span
+                                                    className="absolute z-10 inset-0"
+                                                    aria-hidden="true"
+                                                  />
+                                                  {item.name}
+                                                </a>
+                                              </Link>
                                             </div>
                                           ))}
                                         </div>
