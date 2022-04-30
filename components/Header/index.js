@@ -8,7 +8,6 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   XIcon,
-  UserCircleIcon,
 } from "@heroicons/react/outline";
 import { navigation } from "@utils/Mocks/Header";
 import Link from "next/link";
@@ -242,7 +241,8 @@ export const Header = ({
                                       <div className="max-w-screen-2xl mx-auto px-8">
                                         <div className="grid grid-cols-4 gap-y-10 gap-x-8 py-16">
                                           {category.featured.map((item) => (
-                                            <div
+                                            <Popover.Button
+                                              as="div"
                                               key={item.name}
                                               className="group relative"
                                             >
@@ -262,7 +262,7 @@ export const Header = ({
                                                   {item.name}
                                                 </a>
                                               </Link>
-                                            </div>
+                                            </Popover.Button>
                                           ))}
                                         </div>
                                       </div>

@@ -16,7 +16,7 @@ export const ProductCard = ({ data, category }) => {
       )}
       <div className="max-w-sm rounded-lg border transition-200 shadow-sm group-hover:shadow-lg">
         <Link key={data._id} href={`/product-view/${data.slug}`}>
-          <a target="_blank">
+          <a>
             <div className="relative aspect-1">
               <Image
                 className="rounded-t-lg aspect-1 object-contain mx-auto"

@@ -76,8 +76,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Slug = ({ addToCart, product, variants }) => {
-  console.log({ product, variants });
+const Slug = ({ buyNow, addToCart, product, variants }) => {
   const router = useRouter();
   const { query } = router;
   const [open, setOpen] = useState(false);
@@ -85,7 +84,6 @@ const Slug = ({ addToCart, product, variants }) => {
   const [isDeliverable, setIsDeliverable] = useState(null);
   const [color, setColor] = useState(product.color);
   const [size, setSize] = useState(product.size);
-  console.log({ color, size });
 
   const handlePincodeInputChange = (e) => {
     setPincode(e.target.value);
@@ -175,169 +173,181 @@ const Slug = ({ addToCart, product, variants }) => {
                 />
               </div>
 
-              <form className="mt-6">
-                <div className="w-full flex items-center space-x-16">
-                  {/* Colors */}
-                  <div className="w-1/3">
-                    <RadioGroup className="mt-2">
-                      <RadioGroup.Label className="sr-only">
-                        Choose a color
-                      </RadioGroup.Label>
-                      <div className="flex items-center space-x-3">
-                        {Object.keys(variants).includes("red") &&
-                          Object.keys(variants["red"]).includes(size) && (
-                            <button
-                              type="button"
-                              onClick={() => refresh("red", size)}
-                              className={`bg-red-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
-                                color === "red"
-                                  ? "border-gray-600"
-                                  : "border-gray-300"
-                              }`}
-                            />
-                          )}
-                        {Object.keys(variants).includes("blue") &&
-                          Object.keys(variants["blue"]).includes(size) && (
-                            <button
-                              type="button"
-                              onClick={() => refresh("blue", size)}
-                              className={`bg-blue-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
-                                color === "blue"
-                                  ? "border-gray-600"
-                                  : "border-gray-300"
-                              }`}
-                            />
-                          )}
-                        {Object.keys(variants).includes("black") &&
-                          Object.keys(variants["black"]).includes(size) && (
-                            <button
-                              type="button"
-                              onClick={() => refresh("black", size)}
-                              className={`bg-black p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
-                                color === "black"
-                                  ? "border-gray-600"
-                                  : "border-gray-300"
-                              }`}
-                            />
-                          )}
-                        {Object.keys(variants).includes("green") &&
-                          Object.keys(variants["green"]).includes(size) && (
-                            <button
-                              type="button"
-                              onClick={() => refresh("green", size)}
-                              className={`bg-green-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
-                                color === "green"
-                                  ? "border-gray-600"
-                                  : "border-gray-300"
-                              }`}
-                            />
-                          )}
-                        {Object.keys(variants).includes("yellow") &&
-                          Object.keys(variants["yellow"]).includes(size) && (
-                            <button
-                              type="button"
-                              onClick={() => refresh("yellow", size)}
-                              className={`bg-yellow-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
-                                color === "yellow"
-                                  ? "border-gray-600"
-                                  : "border-gray-300"
-                              }`}
-                            />
-                          )}
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  {/* Size */}
-                  <div className="w-1/3 flex items-center flex-1 space-x-2">
-                    <label
-                      htmlFor="size"
-                      className="text-gray-600 whitespace-pre"
-                    >
-                      Select Size:
-                    </label>
-                    <select
-                      id="size"
-                      name="size"
-                      value={size}
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                      onChange={(e) => refresh(color, e.target.value)}
-                    >
-                      {Object.keys(variants[color]).includes("S") && (
-                        <option value="S">S</option>
-                      )}
-                      {Object.keys(variants[color]).includes("M") && (
-                        <option value="M">M</option>
-                      )}
-                      {Object.keys(variants[color]).includes("L") && (
-                        <option value="L">L</option>
-                      )}
-                      {Object.keys(variants[color]).includes("XL") && (
-                        <option value="XL">XL</option>
-                      )}
-                      {Object.keys(variants[color]).includes("XXL") && (
-                        <option value="XXL">XXL</option>
-                      )}
-                    </select>
-                  </div>
+              <div className="w-full flex items-center space-x-16 mt-3">
+                {/* Colors */}
+                <div className="w-1/3">
+                  <RadioGroup className="mt-2">
+                    <RadioGroup.Label className="sr-only">
+                      Choose a color
+                    </RadioGroup.Label>
+                    <div className="flex items-center space-x-3">
+                      {Object.keys(variants).includes("red") &&
+                        Object.keys(variants["red"]).includes(size) && (
+                          <button
+                            type="button"
+                            onClick={() => refresh("red", size)}
+                            className={`bg-red-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                              color === "red"
+                                ? "border-gray-600"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        )}
+                      {Object.keys(variants).includes("blue") &&
+                        Object.keys(variants["blue"]).includes(size) && (
+                          <button
+                            type="button"
+                            onClick={() => refresh("blue", size)}
+                            className={`bg-blue-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                              color === "blue"
+                                ? "border-gray-600"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        )}
+                      {Object.keys(variants).includes("black") &&
+                        Object.keys(variants["black"]).includes(size) && (
+                          <button
+                            type="button"
+                            onClick={() => refresh("black", size)}
+                            className={`bg-black p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                              color === "black"
+                                ? "border-gray-600"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        )}
+                      {Object.keys(variants).includes("green") &&
+                        Object.keys(variants["green"]).includes(size) && (
+                          <button
+                            type="button"
+                            onClick={() => refresh("green", size)}
+                            className={`bg-green-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                              color === "green"
+                                ? "border-gray-600"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        )}
+                      {Object.keys(variants).includes("yellow") &&
+                        Object.keys(variants["yellow"]).includes(size) && (
+                          <button
+                            type="button"
+                            onClick={() => refresh("yellow", size)}
+                            className={`bg-yellow-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                              color === "yellow"
+                                ? "border-gray-600"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        )}
+                    </div>
+                  </RadioGroup>
                 </div>
 
-                {/* Pincode */}
-                <div className="pincode mt-6 text-gray-700">
-                  <label htmlFor="postal-code" className="text-base">
-                    Check Delivery
-                  </label>
-                  <div className="mt-1 flex items-center space-x-4">
-                    <input
-                      type="number"
-                      name="postal-code"
-                      id="postal-code"
-                      value={pincode?.slice(0, 6)}
-                      onChange={(e) => handlePincodeInputChange(e)}
-                      autoComplete="postal-code"
-                      className="focus:outline-none focus:ring-0 focus:border-gray-800 relative block w-56 rounded-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
-                      placeholder="ZIP / Postal code"
-                    />
-                    <button
-                      type="button"
-                      className="btn-ghost transition-200 capitalize"
-                      onClick={checkDeliveryByPincode}
-                      disabled={pincode?.length === 0 ? true : false}
-                    >
-                      Check
-                    </button>
-                  </div>
-                  {isDeliverable && isDeliverable != null && (
-                    <div className="text-emerald-600 mt-2">
-                      Product is deliverable to your location
-                    </div>
-                  )}
-                  {!isDeliverable && isDeliverable != null && (
-                    <div className="text-red-600 mt-2">
-                      Sorry! we do not offer delivery services to your location.
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-10 flex sm:flex-col1">
-                  <button
-                    type="submit"
-                    className="max-w-xs flex-1 btn-black sm:w-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addToCart(
-                        query.slug,
-                        1,
-                        product.discount ? product.discount : product.price,
-                        product.title,
-                        size,
-                        color
-                      );
-                    }}
+                {/* Size */}
+                <div className="w-1/3 flex items-center flex-1 space-x-2">
+                  <label
+                    htmlFor="size"
+                    className="text-gray-600 whitespace-pre"
                   >
-                    Add to bag
+                    Select Size:
+                  </label>
+                  <select
+                    id="size"
+                    name="size"
+                    value={size}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    onChange={(e) => refresh(color, e.target.value)}
+                  >
+                    {Object.keys(variants[color]).includes("S") && (
+                      <option value="S">S</option>
+                    )}
+                    {Object.keys(variants[color]).includes("M") && (
+                      <option value="M">M</option>
+                    )}
+                    {Object.keys(variants[color]).includes("L") && (
+                      <option value="L">L</option>
+                    )}
+                    {Object.keys(variants[color]).includes("XL") && (
+                      <option value="XL">XL</option>
+                    )}
+                    {Object.keys(variants[color]).includes("XXL") && (
+                      <option value="XXL">XXL</option>
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              {/* Pincode */}
+              <div className="pincode mt-6 text-gray-700">
+                <label htmlFor="postal-code" className="text-base">
+                  Check Delivery
+                </label>
+                <div className="mt-1 flex items-center space-x-4">
+                  <input
+                    type="number"
+                    name="postal-code"
+                    id="postal-code"
+                    value={pincode?.slice(0, 6)}
+                    onChange={(e) => handlePincodeInputChange(e)}
+                    autoComplete="postal-code"
+                    className="focus:outline-none focus:ring-0 focus:border-gray-800 relative block w-56 rounded-md bg-transparent focus:z-10 sm:text-sm border-gray-300"
+                    placeholder="ZIP / Postal code"
+                  />
+                  <button
+                    type="button"
+                    className="btn-ghost transition-200 capitalize"
+                    onClick={checkDeliveryByPincode}
+                    disabled={pincode?.length === 0 ? true : false}
+                  >
+                    Check
                   </button>
-                  {/* <button
+                </div>
+                {isDeliverable && isDeliverable != null && (
+                  <div className="text-emerald-600 mt-2">
+                    Product is deliverable to your location
+                  </div>
+                )}
+                {!isDeliverable && isDeliverable != null && (
+                  <div className="text-red-600 mt-2">
+                    Sorry! we do not offer delivery services to your location.
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-10 flex sm:flex-col-1 space-x-4">
+                <button
+                  className="max-w-xs flex-1 btn-black "
+                  onClick={() =>
+                    buyNow(
+                      query.slug,
+                      1,
+                      product.discount ? product.discount : product.price,
+                      product.title,
+                      size,
+                      color
+                    )
+                  }
+                >
+                  Buy Now
+                </button>
+                <button
+                  className="max-w-xs flex-1 btn-black "
+                  onClick={() => {
+                    addToCart(
+                      query.slug,
+                      1,
+                      product.discount ? product.discount : product.price,
+                      product.title,
+                      size,
+                      color
+                    );
+                  }}
+                >
+                  Add to bag
+                </button>
+                {/* <button
                     type="button"
                     className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
                   >
@@ -347,8 +357,7 @@ const Slug = ({ addToCart, product, variants }) => {
                     />
                     <span className="sr-only">Add to favorites</span>
                   </button> */}
-                </div>
-              </form>
+              </div>
 
               <section aria-labelledby="details-heading" className="mt-12">
                 <h2 id="details-heading" className="sr-only">

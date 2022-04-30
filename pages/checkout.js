@@ -492,10 +492,38 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                       return (
                         <tr key={k}>
                           <td width="50%">
-                            <div className="line-clamp-2">{cart[k].name}</div>
+                            <div className="line-clamp-2">
+                              {cart[k].name} ({cart[k].size}/{cart[k].variant})
+                            </div>
                           </td>
                           <td width="30%" align="center">
+                            <MinusIcon
+                              className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                              onClick={() =>
+                                removeFromCart(
+                                  k,
+                                  1,
+                                  cart[k].price,
+                                  cart[k].name,
+                                  cart[k].size,
+                                  cart[k].variant
+                                )
+                              }
+                            />
                             <span className="mx-2">{cart[k].qty}</span>
+                            <PlusIcon
+                              onClick={() =>
+                                addToCart(
+                                  k,
+                                  1,
+                                  cart[k].price,
+                                  cart[k].name,
+                                  cart[k].size,
+                                  cart[k].variant
+                                )
+                              }
+                              className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                            />
                           </td>
                           <td width="20%" align="right">
                             {numberFormat(cart[k].price)}

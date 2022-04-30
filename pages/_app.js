@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import "../styles/globals.css";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const router = useRouter();
 
   function saveCartToLocalStorage(cart) {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -55,6 +57,14 @@ function MyApp({ Component, pageProps }) {
     saveCartToLocalStorage({});
   }
 
+  function buyNow(itemCode, qty, price, name, size, variant) {
+    let tempCart = { itemCode: { qty: 1, price, name, size, variant } };
+
+    setCart(tempCart);
+    saveCartToLocalStorage(tempCart);
+    router.push("/checkout");
+  }
+
   useEffect(() => {
     try {
       if (localStorage.getItem("cart")) {
@@ -88,6 +98,7 @@ function MyApp({ Component, pageProps }) {
           removeFromCart={removeFromCart}
           clearCart={clearCart}
           subTotal={subTotal}
+          buyNow={buyNow}
           {...pageProps}
         />
         <Layout.Footer />
