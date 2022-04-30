@@ -33,7 +33,7 @@ export const ProductCard = ({ data, category }) => {
             {category ? category : data.category}
           </h4>
           <Link key={data._id} href={`/product-view/${data.slug}`}>
-            <a target="_blank">
+            <a>
               <h5 className="text-base sm:text-lg font-semibold text-gray-600 line-clamp-1 leading-tight capitalize transition-200 group-hover:text-gray-900">
                 {data.title}
               </h5>

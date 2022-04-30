@@ -161,7 +161,11 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
                         {numberFormat(product.discount)}
                       </h3>
                     </div>
-                  ) : null}
+                  ) : (
+                    <h3 className="text-gray-900 text-4xl">
+                      {numberFormat(product.price)}
+                    </h3>
+                  )}
                 </p>
               </div>
 
@@ -441,7 +445,10 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug });
-  let variants = await Product.find({ title: product.title });
+  let variants = await Product.find({
+    title: product.title,
+    category: product.category,
+  });
   let colorSizeSlug = {};
 
   for (let item of variants) {

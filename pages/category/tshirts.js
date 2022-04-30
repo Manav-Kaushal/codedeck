@@ -7,7 +7,15 @@ import { EmptyProductList } from "@components/EmptyProductList";
 
 const Tshirts = ({ products }) => {
   if (Object.keys(products).length === 0) {
-    return <EmptyProductList />;
+    return (
+      <>
+        <SeoContainer
+          title="Buy Best Coding Related Tshirts At Minimum Prices!"
+          noPrefix
+        />
+        <EmptyProductList />
+      </>
+    );
   }
   return (
     <>
