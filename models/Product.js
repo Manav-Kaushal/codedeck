@@ -11,6 +11,7 @@ var ProductSchema = new mongoose.Schema(
     color: { type: String },
     price: { type: Number, required: true },
     discount: { type: Number },
+    discountPercentage: { type: Number },
     availableQty: { type: Number, required: true },
   },
   { timeStamps: true }

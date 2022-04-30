@@ -9,6 +9,10 @@ import {
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { SeoContainer } from "@components/SeoContainer";
+import Product from "models/Product";
+import mongoose from "mongoose";
+import { numberFormat } from "@utils/helpers";
+import Image from "next/image";
 
 const product = {
   name: "Zip Tote Basket",
@@ -72,16 +76,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Slug = ({ addToCart }) => {
+const Slug = ({ addToCart, product, variants }) => {
+  console.log({ product, variants });
   const router = useRouter();
   const { query } = router;
   const [open, setOpen] = useState(false);
   const [pincode, setPincode] = useState(null);
   const [isDeliverable, setIsDeliverable] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [color, setColor] = useState(product.color);
+  const [size, setSize] = useState(product.size);
+  console.log({ color, size });
 
   const handlePincodeInputChange = (e) => {
     setPincode(e.target.value);
+  };
+
+  const refresh = (newColor, newSize) => {
+    let url = `http://localhost:4000/product-view/${variants[newColor][newSize]["slug"]}`;
+    window.location = url;
   };
 
   async function checkDeliveryByPincode() {
@@ -97,89 +109,62 @@ const Slug = ({ addToCart }) => {
 
   return (
     <>
-      <SeoContainer title={product.name} description={product.description} />
-      <main className="max-w-7xl mx-auto sm:pt-16 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto lg:max-w-none">
+      <SeoContainer title={product.title} description={product.description} />
+      <main className="max-w-screen-xl mx-auto sm:py-16 sm:px-6 lg:px-8">
+        <div className="max-w-screen-xl mx-auto lg:max-w-none">
           {/* Product */}
           <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-            {/* Image gallery */}
-            <Tab.Group as="div" className="flex flex-col-reverse">
-              {/* Image selector */}
-              <div className="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
-                <Tab.List className="grid grid-cols-4 gap-6">
-                  {product.images.map((image) => (
-                    <Tab
-                      key={image.id}
-                      className="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50"
-                    >
-                      {({ selected }) => (
-                        <>
-                          <span className="sr-only">{image.name}</span>
-                          <span className="absolute inset-0 rounded-md overflow-hidden">
-                            <img
-                              src={image.src}
-                              alt=""
-                              className="w-full h-full object-center object-cover"
-                            />
-                          </span>
-                          <span
-                            className={classNames(
-                              selected ? "ring-primary" : "ring-transparent",
-                              "absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none"
-                            )}
-                            aria-hidden="true"
-                          />
-                        </>
-                      )}
-                    </Tab>
-                  ))}
-                </Tab.List>
-              </div>
-
-              <Tab.Panels className="w-full aspect-w-1 aspect-h-1">
-                {product.images.map((image) => (
-                  <Tab.Panel key={image.id}>
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="w-full h-full object-center object-cover sm:rounded-lg"
-                    />
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
-            </Tab.Group>
-
+            <div className="relative aspect-1 shadow-md">
+              <Image
+                src={product.imageSrc}
+                alt={product.title}
+                layout="fill"
+                objectFit="contain"
+                className="shadow-md"
+              />
+            </div>
             {/* Product info */}
             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-              <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                {product.name}
+              <p className="text-gray-400">CodeDeck</p>
+
+              <h1 className="mt-1 text-3xl font-semibold tracking-tight text-gray-700 capitalize">
+                {product.title} ({product.size} / {product.color})
               </h1>
 
-              <div className="mt-3">
-                <h2 className="sr-only">Product information</h2>
-                <p className="text-3xl text-gray-900">{product.price}</p>
-              </div>
-
               {/* Reviews */}
-              <div className="mt-3">
+              {/* <div className="mt-2">
                 <h3 className="sr-only">Reviews</h3>
-                <div className="flex items-center">
+                <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
                       <StarIcon
                         key={rating}
                         className={classNames(
-                          product.rating > rating
-                            ? "text-primary"
-                            : "text-gray-300",
+                          5 > rating ? "text-primary" : "text-gray-300",
                           "h-5 w-5 flex-shrink-0"
                         )}
                         aria-hidden="true"
                       />
                     ))}
                   </div>
-                  <p className="sr-only">{product.rating} out of 5 stars</p>
+                  <p className="text-gray-400 text-sm">(713 reviews)</p>
                 </div>
+              </div> */}
+
+              <div className="mt-3">
+                <h2 className="sr-only">Product information</h2>
+                <p className="text-3xl text-gray-900">
+                  {product.discount ? (
+                    <div className="flex items-end space-x-2">
+                      <strike className="text-gray-400">
+                        <small>{numberFormat(product.price)}</small>
+                      </strike>
+                      <h3 className="text-primary text-4xl">
+                        {numberFormat(product.discount)}
+                      </h3>
+                    </div>
+                  ) : null}
+                </p>
               </div>
 
               <div className="mt-6">
@@ -191,44 +176,110 @@ const Slug = ({ addToCart }) => {
               </div>
 
               <form className="mt-6">
-                {/* Colors */}
-                <div>
-                  <RadioGroup
-                    value={selectedColor}
-                    onChange={setSelectedColor}
-                    className="mt-2"
-                  >
-                    <RadioGroup.Label className="sr-only">
-                      Choose a color
-                    </RadioGroup.Label>
-                    <div className="flex items-center space-x-3">
-                      {product.colors.map((color) => (
-                        <RadioGroup.Option
-                          key={color.name}
-                          value={color}
-                          className={({ active, checked }) =>
-                            classNames(
-                              color.selectedColor,
-                              active && checked ? "ring ring-offset-1" : "",
-                              !active && checked ? "ring-2" : "",
-                              "-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none"
-                            )
-                          }
-                        >
-                          <RadioGroup.Label as="p" className="sr-only">
-                            {color.name}
-                          </RadioGroup.Label>
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              color.bgColor,
-                              "h-8 w-8 border border-black border-opacity-10 rounded-full"
-                            )}
-                          />
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
+                <div className="w-full flex items-center space-x-16">
+                  {/* Colors */}
+                  <div className="w-1/3">
+                    <RadioGroup className="mt-2">
+                      <RadioGroup.Label className="sr-only">
+                        Choose a color
+                      </RadioGroup.Label>
+                      <div className="flex items-center space-x-3">
+                        {Object.keys(variants).includes("red") &&
+                          Object.keys(variants["red"]).includes(size) && (
+                            <button
+                              type="button"
+                              onClick={() => refresh("red", size)}
+                              className={`bg-red-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                                color === "red"
+                                  ? "border-gray-600"
+                                  : "border-gray-300"
+                              }`}
+                            />
+                          )}
+                        {Object.keys(variants).includes("blue") &&
+                          Object.keys(variants["blue"]).includes(size) && (
+                            <button
+                              type="button"
+                              onClick={() => refresh("blue", size)}
+                              className={`bg-blue-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                                color === "blue"
+                                  ? "border-gray-600"
+                                  : "border-gray-300"
+                              }`}
+                            />
+                          )}
+                        {Object.keys(variants).includes("black") &&
+                          Object.keys(variants["black"]).includes(size) && (
+                            <button
+                              type="button"
+                              onClick={() => refresh("black", size)}
+                              className={`bg-black p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                                color === "black"
+                                  ? "border-gray-600"
+                                  : "border-gray-300"
+                              }`}
+                            />
+                          )}
+                        {Object.keys(variants).includes("green") &&
+                          Object.keys(variants["green"]).includes(size) && (
+                            <button
+                              type="button"
+                              onClick={() => refresh("green", size)}
+                              className={`bg-green-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                                color === "green"
+                                  ? "border-gray-600"
+                                  : "border-gray-300"
+                              }`}
+                            />
+                          )}
+                        {Object.keys(variants).includes("yellow") &&
+                          Object.keys(variants["yellow"]).includes(size) && (
+                            <button
+                              type="button"
+                              onClick={() => refresh("yellow", size)}
+                              className={`bg-yellow-500 p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none h-8 w-8 border-2 ${
+                                color === "yellow"
+                                  ? "border-gray-600"
+                                  : "border-gray-300"
+                              }`}
+                            />
+                          )}
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  {/* Size */}
+                  <div className="w-1/3 flex items-center flex-1 space-x-2">
+                    <label
+                      htmlFor="size"
+                      className="text-gray-600 whitespace-pre"
+                    >
+                      Select Size:
+                    </label>
+                    <select
+                      id="size"
+                      name="size"
+                      value={size}
+                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                      onChange={(e) => refresh(color, e.target.value)}
+                    >
+                      {Object.keys(variants[color]).includes("S") && (
+                        <option value="S">S</option>
+                      )}
+                      {Object.keys(variants[color]).includes("M") && (
+                        <option value="M">M</option>
+                      )}
+                      {Object.keys(variants[color]).includes("L") && (
+                        <option value="L">L</option>
+                      )}
+                      {Object.keys(variants[color]).includes("XL") && (
+                        <option value="XL">XL</option>
+                      )}
+                      {Object.keys(variants[color]).includes("XXL") && (
+                        <option value="XXL">XXL</option>
+                      )}
+                    </select>
+                  </div>
                 </div>
 
                 {/* Pincode */}
@@ -277,16 +328,16 @@ const Slug = ({ addToCart }) => {
                       addToCart(
                         query.slug,
                         1,
-                        499,
-                        "Tshirt (XL, Red)",
-                        "XL",
-                        "Red"
+                        product.discount ? product.discount : product.price,
+                        product.title,
+                        size,
+                        color
                       );
                     }}
                   >
                     Add to bag
                   </button>
-                  <button
+                  {/* <button
                     type="button"
                     className="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
                   >
@@ -295,7 +346,7 @@ const Slug = ({ addToCart }) => {
                       aria-hidden="true"
                     />
                     <span className="sr-only">Add to favorites</span>
-                  </button>
+                  </button> */}
                 </div>
               </form>
 
@@ -305,7 +356,7 @@ const Slug = ({ addToCart }) => {
                 </h2>
 
                 <div className="border-t divide-y divide-gray-200">
-                  {product.details.map((detail) => (
+                  {/* {product.details.map((detail) => (
                     <Disclosure as="div" key={detail.name} defaultOpen>
                       {({ open }) => (
                         <>
@@ -347,13 +398,13 @@ const Slug = ({ addToCart }) => {
                         </>
                       )}
                     </Disclosure>
-                  ))}
+                  ))} */}
                 </div>
               </section>
             </div>
           </div>
 
-          <section
+          {/* <section
             aria-labelledby="related-heading"
             className="mt-10 border-t border-gray-200 py-16 px-4 sm:px-0"
           >
@@ -369,11 +420,36 @@ const Slug = ({ addToCart }) => {
                 <ProductCard data={product} />
               ))}
             </div>
-          </section>
+          </section> */}
         </div>
       </main>
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+  let product = await Product.findOne({ slug: context.query.slug });
+  let variants = await Product.find({ title: product.title });
+  let colorSizeSlug = {};
+
+  for (let item of variants) {
+    if (Object.keys(colorSizeSlug).includes(item.color)) {
+      colorSizeSlug[item.color][item.size] = { slug: item.slug };
+    } else {
+      colorSizeSlug[item.color] = {};
+      colorSizeSlug[item.color][item.size] = { slug: item.slug };
+    }
+  }
+
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      variants: JSON.parse(JSON.stringify(colorSizeSlug)),
+    },
+  };
+}
 
 export default Slug;

@@ -353,7 +353,7 @@ export const Header = ({
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[320px] shadow-xl z-50 select-none">
+                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[375px] shadow-xl z-50 select-none">
                           {Object.keys(cart).length === 0 && (
                             <div>
                               <EmptyCart size="sm" />
@@ -393,7 +393,8 @@ export const Header = ({
                                       <tr key={k}>
                                         <td width="50%">
                                           <div className="line-clamp-2">
-                                            {cart[k].name}
+                                            {cart[k].name} ({cart[k].size}/
+                                            {cart[k].variant})
                                           </div>
                                         </td>
                                         <td width="30%" align="center">

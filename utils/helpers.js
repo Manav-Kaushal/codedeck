@@ -3,3 +3,7 @@ export const numberFormat = (value) =>
     style: "currency",
     currency: "INR",
   }).format(value);
+
+export function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
