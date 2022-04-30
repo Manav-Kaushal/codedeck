@@ -92,7 +92,7 @@ const Slug = ({ addToCart, product, variants }) => {
   };
 
   const refresh = (newColor, newSize) => {
-    let url = `http://localhost:4000/product-view/${variants[newColor][newSize]["slug"]}`;
+    let url = `/product-view/${variants[newColor][newSize]["slug"]}`;
     window.location = url;
   };
 
