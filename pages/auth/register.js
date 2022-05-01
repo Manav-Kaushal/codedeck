@@ -1,10 +1,48 @@
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
-import React from "react";
-import { BsFacebook, BsTwitter, BsGithub } from "react-icons/bs";
-import { HiLockClosed } from "react-icons/hi";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const Register = () => {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  function handleChange(e) {
+    if (e.target.name == "name") {
+      setName(e.target.value);
+    } else if (e.target.name == "email") {
+      setEmail(e.target.value);
+    } else if (e.target.name == "password") {
+      setPassword(e.target.value);
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formBody = {
+      name,
+      email,
+      password,
+    };
+    let res = await fetch("http://localhost:4000/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formBody),
+    });
+    let data = await res.json();
+    if (data.success) {
+      toast.success("Your account has been created!");
+      setName("");
+      setEmail("");
+      setPassword("");
+    } else {
+      toast.error("Your account could not be created! Please try again");
+    }
+  }
+
   return (
     <>
       <SeoContainer title={"Register"} />
@@ -19,7 +57,7 @@ const Register = () => {
 
             <div className="mt-6">
               <div className="mt-6">
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
                       htmlFor="name"
@@ -32,6 +70,8 @@ const Register = () => {
                         id="name"
                         name="name"
                         type="name"
+                        value={name}
+                        onChange={handleChange}
                         autoComplete="name"
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
@@ -51,6 +91,8 @@ const Register = () => {
                         id="email"
                         name="email"
                         type="email"
+                        value={email}
+                        onChange={handleChange}
                         autoComplete="email"
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
@@ -70,27 +112,12 @@ const Register = () => {
                         id="password"
                         name="password"
                         type="password"
+                        value={password}
+                        onChange={handleChange}
                         autoComplete="current-password"
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                       />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        className="h-4 w-4 text-primary/80 focus:ring-primary border-gray-300 rounded transition-200"
-                      />
-                      <label
-                        htmlFor="remember-me"
-                        className="ml-2 block text-sm text-gray-900"
-                      >
-                        I accept terms and conditions
-                      </label>
                     </div>
                   </div>
 

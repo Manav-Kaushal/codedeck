@@ -1,10 +1,53 @@
+import Loader, { FullPageLoader } from "@components/Loader";
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { BsFacebook, BsTwitter, BsGithub } from "react-icons/bs";
-import { HiLockClosed } from "react-icons/hi";
 
 const Login = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [submitting, setSubmitting] = useState(false);
+
+  function handleChange(e) {
+    if (e.target.name == "email") {
+      setEmail(e.target.value);
+    } else if (e.target.name == "password") {
+      setPassword(e.target.value);
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitting(true);
+    const formBody = {
+      email,
+      password,
+    };
+    let res = await fetch("http://localhost:4000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formBody),
+    });
+    let data = await res.json();
+    if (data.success === true) {
+      toast.success("Successfully logged in!");
+      setEmail("");
+      setPassword("");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } else {
+      toast.error(data.error);
+    }
+    setSubmitting(false);
+  }
+
   return (
     <>
       <SeoContainer title={"Login"} />
@@ -69,7 +112,7 @@ const Login = () => {
               </div>
 
               <div className="mt-6">
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
                       htmlFor="email"
@@ -82,6 +125,8 @@ const Login = () => {
                         id="email"
                         name="email"
                         type="email"
+                        value={email}
+                        onChange={handleChange}
                         autoComplete="email"
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
@@ -101,6 +146,8 @@ const Login = () => {
                         id="password"
                         name="password"
                         type="password"
+                        value={password}
+                        onChange={handleChange}
                         autoComplete="current-password"
                         required
                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
@@ -108,8 +155,8 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
+                  <div className="flex items-center justify-end">
+                    {/* <div className="flex items-center">
                       <input
                         id="remember-me"
                         name="remember-me"
@@ -122,7 +169,7 @@ const Login = () => {
                       >
                         Remember me
                       </label>
-                    </div>
+                    </div> */}
 
                     <div className="text-sm">
                       <Link href="/auth/forgot">
@@ -138,7 +185,7 @@ const Login = () => {
                       type="submit"
                       className="group w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary/80 hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-200"
                     >
-                      Sign in
+                      {submitting ? <Loader /> : "Sign in"}
                     </button>
                   </div>
                   <p className="mt-2 text-sm text-gray-600">

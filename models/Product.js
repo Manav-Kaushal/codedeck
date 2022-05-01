@@ -14,7 +14,7 @@ var ProductSchema = new mongoose.Schema(
     discountPercentage: { type: Number },
     availableQty: { type: Number, required: true },
   },
-  { timeStamps: true }
+  { timestamps: true }
 );
 
 mongoose.models = {};
