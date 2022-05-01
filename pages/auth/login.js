@@ -36,6 +36,7 @@ const Login = () => {
     });
     let data = await res.json();
     if (data.success === true) {
+      localStorage.setItem("token", data.jwt);
       toast.success("Successfully logged in!");
       setEmail("");
       setPassword("");
