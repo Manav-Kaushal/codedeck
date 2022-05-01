@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const [user, setUser] = useState({ value: null });
+  const [key, setKey] = useState(0);
   const router = useRouter();
 
   function saveCartToLocalStorage(cart) {
@@ -65,6 +67,13 @@ function MyApp({ Component, pageProps }) {
     router.push("/checkout");
   }
 
+  function logout() {
+    localStorage.removeItem("token");
+    setUser({ value: null });
+    setKey(Math.random());
+    toast.success("Successfully logged out!");
+  }
+
   useEffect(() => {
     try {
       if (localStorage.getItem("cart")) {
@@ -75,7 +84,12 @@ function MyApp({ Component, pageProps }) {
       console.log(error);
       localStorage.removeItem("cart");
     }
-  }, []);
+    let token = localStorage.getItem("token");
+    if (token) {
+      setUser({ value: token });
+      setKey(Math.random());
+    }
+  }, [router.query]);
 
   return (
     <>
@@ -85,12 +99,14 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Layout>
         <Layout.Header
-          key={subTotal}
+          user={user}
+          key={key}
           cart={cart}
           addToCart={addToCart}
           removeFromCart={removeFromCart}
           clearCart={clearCart}
           subTotal={subTotal}
+          logout={logout}
         />
         <Component
           cart={cart}

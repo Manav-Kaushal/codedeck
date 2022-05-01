@@ -11,6 +11,8 @@ Layout.Header = ({
   removeFromCart,
   clearCart,
   subTotal,
+  user,
+  logout,
 }) => {
   return (
     <Header
@@ -20,6 +22,8 @@ Layout.Header = ({
       removeFromCart={removeFromCart}
       clearCart={clearCart}
       subTotal={subTotal}
+      user={user}
+      logout={logout}
     />
   );
 };

@@ -25,6 +25,8 @@ export const Header = ({
   removeFromCart,
   clearCart,
   subTotal,
+  user,
+  logout,
 }) => {
   const [isCartShowing, setIsCartShowing] = useState(
     Object.keys(cart).length === 0 ? false : true
@@ -145,20 +147,33 @@ export const Header = ({
               </div>
 
               <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-                <div className="flow-root">
-                  <Link href="/auth/register">
-                    <a className="-m-2 p-2 block font-medium text-gray-900">
-                      Create an account
-                    </a>
-                  </Link>
-                </div>
-                <div className="flow-root">
-                  <Link href="/auth/login">
-                    <a className="-m-2 p-2 block font-medium text-gray-900">
-                      Sign in
-                    </a>
-                  </Link>
-                </div>
+                {!user?.value ? (
+                  <>
+                    <Link href="/auth/login">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        Sign in
+                      </a>
+                    </Link>
+                    <Link href="/auth/register">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        Create an account
+                      </a>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/auth/login">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        User
+                      </a>
+                    </Link>
+                    <Link href="/auth/register">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        Logout
+                      </a>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </Transition.Child>
@@ -171,16 +186,35 @@ export const Header = ({
           <div className="bg-gray-900">
             <div className="max-w-screen-2xl mx-auto h-10 px-4 flex items-center justify-end sm:px-6 lg:px-8">
               <div className="flex items-center space-x-6 ">
-                <Link href="/auth/login">
-                  <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
-                    Sign in
-                  </a>
-                </Link>
-                <Link href="/auth/register">
-                  <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
-                    Create an account
-                  </a>
-                </Link>
+                {!user?.value ? (
+                  <>
+                    <Link href="/auth/login">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        Sign in
+                      </a>
+                    </Link>
+                    <Link href="/auth/register">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        Create an account
+                      </a>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/auth/login">
+                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
+                        User
+                      </a>
+                    </Link>
+
+                    <a
+                      className="text-sm font-medium text-gray-300 hover:text-white transition-200 cursor-pointer"
+                      onClick={() => logout()}
+                    >
+                      Logout
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           </div>
