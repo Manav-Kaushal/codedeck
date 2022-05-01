@@ -1,9 +1,17 @@
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { BiRightArrowAlt } from "react-icons/bi";
 
 const Forgot = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
+
   return (
     <>
       <SeoContainer title={"Forgot Password"} />

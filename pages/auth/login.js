@@ -1,8 +1,8 @@
-import Loader, { FullPageLoader } from "@components/Loader";
+import Loader from "@components/Loader";
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsFacebook, BsTwitter, BsGithub } from "react-icons/bs";
 
@@ -48,6 +48,12 @@ const Login = () => {
     }
     setSubmitting(false);
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

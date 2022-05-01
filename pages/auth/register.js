@@ -1,9 +1,11 @@
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Register = () => {
+  const router = useRouter();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -42,6 +44,12 @@ const Register = () => {
       toast.error("Your account could not be created! Please try again");
     }
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

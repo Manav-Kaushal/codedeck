@@ -4,12 +4,14 @@ import "../styles/globals.css";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import LoadingBar from "react-top-loading-bar";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
+  const [progress, setProgress] = useState(0);
   const router = useRouter();
 
   function saveCartToLocalStorage(cart) {
@@ -75,6 +77,12 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
+    router.events.on("routeChangeStart", () => {
+      setProgress(40);
+    });
+    router.events.on("routeChangeComplete", () => {
+      setProgress(100);
+    });
     try {
       if (localStorage.getItem("cart")) {
         setCart(JSON.parse(localStorage.getItem("cart")));
@@ -98,6 +106,13 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" type="image/png" href="/code.png" />
       </Head>
       <Layout>
+        <LoadingBar
+          color="#D1345B"
+          progress={progress}
+          onLoaderFinished={() => setProgress(0)}
+          height={3}
+          waitingTime={400}
+        />
         <Layout.Header
           user={user}
           key={key}
