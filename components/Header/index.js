@@ -346,11 +346,9 @@ export const Header = ({
                   <a href="#" className="lg:hidden">
                     <span className="sr-only">CodeDeck</span>
                     <Link href="/">
-                      <a>
-                        <h1 className="text-2xl text-primary font-semibold select-none">
-                          CodeDeck
-                        </h1>
-                      </a>
+                      <h1 className="text-2xl text-primary font-semibold select-none">
+                        CodeDeck
+                      </h1>
                     </Link>
                   </a>
 

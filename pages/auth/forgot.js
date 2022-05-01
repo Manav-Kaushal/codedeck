@@ -6,6 +6,8 @@ import { BiRightArrowAlt } from "react-icons/bi";
 
 const Forgot = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
       router.push("/");

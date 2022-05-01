@@ -8,8 +8,8 @@ import { BsFacebook, BsTwitter, BsGithub } from "react-icons/bs";
 
 const Login = () => {
   const router = useRouter();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   function handleChange(e) {
@@ -27,7 +27,7 @@ const Login = () => {
       email,
       password,
     };
-    let res = await fetch("http://localhost:4000/api/login", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

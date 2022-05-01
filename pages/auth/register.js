@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 
 const Register = () => {
   const router = useRouter();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleChange(e) {
     if (e.target.name == "name") {
@@ -27,7 +27,7 @@ const Register = () => {
       email,
       password,
     };
-    let res = await fetch("http://localhost:4000/api/signup", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

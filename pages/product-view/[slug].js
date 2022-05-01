@@ -95,7 +95,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
   };
 
   async function checkDeliveryByPincode() {
-    const res = await fetch("http://localhost:4000/api/pincodes");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincodes`);
     const pincodes = await res.json();
 
     if (pincodes.includes(parseInt(pincode))) {
