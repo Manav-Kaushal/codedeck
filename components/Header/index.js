@@ -358,11 +358,13 @@ export const Header = ({
                     <div className="relative flex items-center select-none">
                       {/* Cart */}
                       <div className="p-2 cursor-pointer">
-                        <div className="relative group flex items-center">
+                        <div
+                          className="relative group flex items-center"
+                          onClick={() => setIsCartShowing(!isCartShowing)}
+                        >
                           <ShoppingBagIcon
                             className="flex-shrink-0 h-8 w-8 transition-200 text-gray-400 group-hover:text-primary"
                             aria-hidden="true"
-                            onClick={() => setIsCartShowing(!isCartShowing)}
                           />
                           <span className="absolute top-1/2 left-1/2 transform -translate-y-[15%] -translate-x-1/2 text-[10px] font-bold text-gray-400 group-hover:text-primary transition-200">
                             10
@@ -384,7 +386,7 @@ export const Header = ({
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[375px] shadow-xl z-50 select-none">
+                        <div className="sidebar absolute top-12 right-2 bg-white p-4 w-[350px] sm:w-[375px] shadow-xl z-50 select-none">
                           {Object.keys(cart).length === 0 && (
                             <div>
                               <EmptyCart size="sm" />
@@ -430,7 +432,7 @@ export const Header = ({
                                         </td>
                                         <td width="30%" align="center">
                                           <MinusIcon
-                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer transition-200 hover:text-primary"
                                             onClick={() =>
                                               removeFromCart(
                                                 k,
@@ -448,19 +450,19 @@ export const Header = ({
                                           <PlusIcon
                                             onClick={() =>
                                               addToCart(
-                                                query.slug,
+                                                k,
                                                 1,
-                                                499,
-                                                "Tshirt (XL, Red)",
-                                                "XL",
-                                                "Red"
+                                                cart[k].price,
+                                                cart[k].name,
+                                                cart[k].size,
+                                                cart[k].variant
                                               )
                                             }
-                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer"
+                                            className="w-6 h-6 inline-flex shadow-md border rounded-md p-1 cursor-pointer transition-200 hover:text-primary"
                                           />
                                         </td>
                                         <td width="20%" align="right">
-                                          {cart[k].price}
+                                          {numberFormat(cart[k].price)}
                                         </td>
                                       </tr>
                                     );

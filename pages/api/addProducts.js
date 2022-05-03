@@ -15,9 +15,12 @@ const handler = async (req, res) => {
         color: req.body[i].color,
         price: req.body[i].price,
         discount: req.body[i].discount,
-        discountPercentage: Math.round(
-          ((req.body[i].price - req.body[i].discount) / req.body[i].price) * 100
-        ),
+        discountPercentage:
+          Math.round(
+            ((req.body[i]?.price - req.body[i]?.discount) /
+              req.body[i]?.price) *
+              100
+          ),
         availableQty: req.body[i].availableQty,
       });
       await newProduct.save();

@@ -97,8 +97,8 @@ function MyApp({ Component, pageProps }) {
     let token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
-      setKey(Math.random());
     }
+    setKey(Math.random());
   }, [router.query]);
 
   return (
@@ -120,16 +120,18 @@ function MyApp({ Component, pageProps }) {
           height={3}
           waitingTime={400}
         />
-        <Layout.Header
-          user={user}
-          key={key}
-          cart={cart}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
-          clearCart={clearCart}
-          subTotal={subTotal}
-          logout={logout}
-        />
+        {key && (
+          <Layout.Header
+            user={user}
+            key={key}
+            cart={cart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            clearCart={clearCart}
+            subTotal={subTotal}
+            logout={logout}
+          />
+        )}
         <Component
           cart={cart}
           addToCart={addToCart}
