@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import LoadingBar from "react-top-loading-bar";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -102,6 +103,11 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <Script
+        type="application/javascript"
+        crossorigin="anonymous"
+        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
+      />
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/png" href="/code.png" />

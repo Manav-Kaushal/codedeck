@@ -2,12 +2,8 @@ import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/solid";
 import Head from "next/head";
-import {
-  MinusIcon,
-  PlusIcon,
-  XIcon,
-  ShoppingCartIcon,
-} from "@heroicons/react/outline";
+import { MinusIcon, PlusIcon } from "@heroicons/react/outline";
+import { SiPaytm } from "react-icons/si";
 import { numberFormat } from "@utils/helpers";
 import Link from "next/link";
 import { EmptyCart } from "@components/EmptyCart";
@@ -48,6 +44,54 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0]
   );
+
+  const initiatePayment = async () => {
+    let oid = Math.floor(Math.random() * Date.now());
+    const data = { cart, subTotal, oid, email: "email" };
+
+    // Get a transaction token
+    let res = await fetch(
+      `${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    let txnRes = await res.json();
+    console.log(txnRes);
+    let txnToken = txnRes.txnToken;
+
+    var config = {
+      root: "",
+      flow: "DEFAULT",
+      data: {
+        orderId: oid,
+        token: txnToken,
+        tokenType: "TXN_TOKEN",
+        amount: subTotal,
+      },
+      handler: {
+        notifyMerchant: function (eventName, data) {
+          console.log("notifyMerchant handler function called");
+          console.log("eventName => ", eventName);
+          console.log("data => ", data);
+        },
+      },
+    };
+
+    // initialze configuration using init method
+    window.Paytm.CheckoutJS.init(config)
+      .then(function onSuccess() {
+        // after successfully updating configuration, invoke JS Checkout
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch(function onError(error) {
+        console.log("error => ", error);
+      });
+  };
 
   if (Object.keys(cart).length === 0) {
     return <EmptyCart />;
@@ -541,9 +585,12 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                 )}
                 <div className="flex items-center justify-center space-x-4 mt-5">
                   <Link href={"/checkout"} passHref>
-                    <button className="btn-black w-full flex items-center justify-center space-x-1 transition-200">
-                      <ShoppingCartIcon className="w-[18px] h-[18px]" />
-                      <span className="text-base">Checkout</span>
+                    <button
+                      className="group btn-black w-full flex items-center justify-center transition-200 space-x-4"
+                      onClick={() => initiatePayment()}
+                    >
+                      <SiPaytm className="w-[32px] h-[32px] group-hover:text-[#00baf2] transition-200" />
+                      <span className="text-base">Pay</span>
                     </button>
                   </Link>
                 </div>
