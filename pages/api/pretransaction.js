@@ -1,5 +1,5 @@
 const https = require("https");
-const PaytmChecksum = require("PaytmChecksum");
+const PaytmChecksum = require("paytmchecksum");
 import connectDB from "../../middleware/mongoose";
 import Order from "../../models/Order";
 
