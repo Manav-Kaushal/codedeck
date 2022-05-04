@@ -7,7 +7,7 @@ import {
   StarIcon,
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { SeoContainer } from "@components/SeoContainer";
 import Product from "models/Product";
 import mongoose from "mongoose";
@@ -98,7 +98,7 @@ const Slug = ({ buyNow, addToCart, product, variants }) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincodes`);
     const pincodes = await res.json();
 
-    if (pincodes.includes(parseInt(pincode))) {
+    if (Object.keys(pincodes).includes(pincode)) {
       setIsDeliverable(true);
     } else {
       setIsDeliverable(false);

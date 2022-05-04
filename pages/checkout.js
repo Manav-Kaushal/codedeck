@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import Head from "next/head";
 import {
   LocationMarkerIcon,
@@ -28,6 +28,8 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
 
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+
+  console.log(formData);
 
   const initiatePayment = async () => {
     let oid = Math.floor(Math.random() * Date.now());
@@ -94,12 +96,32 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
     }, 3000);
   };
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     setFormData({
       name: event.target.name,
       value: event.target.value,
     });
   };
+
+  // todo: build better logic
+  useEffect(() => {
+    async function setCityState() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincodes`);
+      const pincodes = await res.json();
+
+      if (Object.keys(pincodes).includes(formData.zipcode)) {
+        setCity(pincodes[formData.zipcode][0]);
+        setRegion(pincodes[formData.zipcode][1]);
+      }
+    }
+    
+    if (formData?.zipcode?.length === 6) {
+      setCityState();
+    } else {
+      setCity("");
+      setRegion("");
+    }
+  }, [formData.zipcode]);
 
   const areAllFieldsFilled =
     formData.email?.length > 0 &&
@@ -263,12 +285,10 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                           type="text"
                           id="city"
                           name="city"
-                          value={formData.city || ""}
+                          value={city}
                           onChange={handleChange}
                           autoComplete="address-level2"
                           className="text-gray-900 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
-                          readOnly={true}
-                          disabled
                         />
                       </div>
                     </div>
@@ -285,12 +305,10 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                           type="text"
                           id="region"
                           name="region"
-                          value={formData.region || ""}
+                          value={region}
                           onChange={handleChange}
                           autoComplete="address-level1"
                           className="text-gray-900 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
-                          readOnly={true}
-                          disabled
                         />
                       </div>
                     </div>
