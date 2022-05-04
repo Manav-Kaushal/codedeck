@@ -1,7 +1,7 @@
 import { SeoContainer } from "@components/SeoContainer";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BiRightArrowAlt } from "react-icons/bi";
 
 const Forgot = () => {

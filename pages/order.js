@@ -6,32 +6,6 @@ import Order from "../models/Order";
 import mongoose from "mongoose";
 import { numberFormat } from "@utils/helpers";
 
-const products = [
-  {
-    id: 1,
-    name: "Cold Brew Bottle",
-    description:
-      "This glass bottle comes with a mesh insert for steeping tea or cold-brewing coffee. Pour from any angle and remove the top for easy cleaning.",
-    href: "#",
-    quantity: 1,
-    price: "$32.00",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/confirmation-page-05-product-01.jpg",
-    imageAlt: "Glass bottle with black plastic pour top and mesh insert.",
-  },
-  {
-    id: 2,
-    name: "Cold Brew Bottle in regular size",
-    description: "lorem0220202020",
-    href: "#",
-    quantity: 2,
-    price: "$32.00",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/confirmation-page-05-product-01.jpg",
-    imageAlt: "Glass bottle with black plastic pour top and mesh insert.",
-  },
-];
-
 const defaultOptions = {
   loop: false,
   autoplay: true,
@@ -44,7 +18,7 @@ const defaultOptions = {
 const UserOrder = ({ order }) => {
   const router = useRouter();
   const { id } = router.query;
-  console.log(order);
+  const products = order?.products;
 
   return (
     <div className="relative">
@@ -76,50 +50,46 @@ const UserOrder = ({ order }) => {
             <h3 className="sr-only">Items</h3>
             <dl className="mt-12 font-bold flex items-center justify-between">
               <dt className="text-gray-900 text-base">
-                <span>Order ID: #{order.orderId} </span>
-                <span className="text-blue-700 cursor-pointer text-sm">
+                <span>Order ID: #{order?.orderId} </span>
+                <span className="text-blue-500 cursor-pointer text-sm">
                   Track
                 </span>
               </dt>
               <dt className="text-gray-900 text-base">
-                Payment Status: {order.status}
+                Payment Status:{" "}
+                <span className="text-emerald-500">{order?.status}</span>
               </dt>
               <dt className="text-gray-900 text-base">
-                Amount: {numberFormat(order.amount)}
+                Amount: {numberFormat(order?.amount)}
               </dt>
             </dl>
-            {products.map((product) => (
+            {Object.keys(products).map((key) => (
               <div
-                key={product.id}
-                className="py-10 border-b border-gray-200 flex space-x-6"
+                key={key}
+                className="pt-10 pb-4 border-b border-gray-200 space-x-6"
               >
-                <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
-                  className="flex-none w-20 h-20 object-center object-cover bg-gray-100 rounded-lg sm:w-40 sm:h-40"
-                />
-                <div className="flex-auto flex flex-col">
+                <div className="flex items-center justify-between w-full">
                   <div>
                     <h4 className="font-medium text-gray-900">
-                      <a href={product.href} className="font-semibold">
-                        {product.name}
+                      <a href={key} className="font-semibold">
+                        {products[key]?.name} ({products[key]?.size}/
+                        {products[key]?.variant})
                       </a>
                     </h4>
-                    <p className="mt-2 text-sm text-gray-600">
-                      {product.description}
-                    </p>
                   </div>
-                  <div className="mt-6 flex-1 flex items-end">
+                  <div className="flex items-center">
                     <dl className="flex text-sm divide-x divide-gray-200 space-x-4 sm:space-x-6">
                       <div className="flex space-x-2">
                         <dt className="font-semibold text-gray-900">
                           Quantity
                         </dt>
-                        <dd className="text-gray-700">{product.quantity}</dd>
+                        <dd className="text-gray-700">{products[key]?.qty}</dd>
                       </div>
                       <div className="pl-4 flex sm:pl-6 space-x-2">
                         <dt className="font-semibold text-gray-900">Price</dt>
-                        <dd className="text-gray-700">{product.price}</dd>
+                        <dd className="text-gray-700">
+                          {numberFormat(products[key]?.qty)}
+                        </dd>
                       </div>
                     </dl>
                   </div>
@@ -138,8 +108,8 @@ const UserOrder = ({ order }) => {
                   </dt>
                   <dd className="mt-2 text-gray-700">
                     <address className="not-italic">
-                      <span className="block">Kristin Watson</span>
-                      <span className="block">7363 Cynthia Pass</span>
+                      <span className="block"></span>
+                      <span className="block">{order?.address}</span>
                       <span className="block">Toronto, ON N3Y 4H8</span>
                     </address>
                   </dd>
