@@ -63,7 +63,8 @@ function MyApp({ Component, pageProps }) {
   }
 
   function buyNow(itemCode, qty, price, name, size, variant) {
-    let tempCart = { itemCode: { qty: 1, price, name, size, variant } };
+    let tempCart = {};
+    tempCart[itemCode] = { qty: 1, price, name, size, variant };
 
     setCart(tempCart);
     saveCartToLocalStorage(tempCart);

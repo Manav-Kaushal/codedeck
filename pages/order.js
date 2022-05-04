@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Lottie from "react-lottie";
 import animationData from "@static/confetti.json";
+import { useRouter } from "next/router";
+import Order from "../models/Order";
+import mongoose from "mongoose";
+import { numberFormat } from "@utils/helpers";
 
 const products = [
   {
@@ -28,15 +32,20 @@ const products = [
   },
 ];
 
-const Order = () => {
-  const defaultOptions = {
-    loop: false,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+const defaultOptions = {
+  loop: false,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+const UserOrder = ({ order }) => {
+  const router = useRouter();
+  const { id } = router.query;
+  console.log(order);
+
   return (
     <div className="relative">
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 cursor-default">
@@ -57,7 +66,7 @@ const Order = () => {
               It&apos;s on the way!
             </p>
             <p className="mt-2 text-base text-gray-500">
-              Your order is confirmed and will be shipped soon.
+              Your order has been successfully placed.
             </p>
           </div>
 
@@ -66,8 +75,18 @@ const Order = () => {
 
             <h3 className="sr-only">Items</h3>
             <dl className="mt-12 font-bold flex items-center justify-between">
-              <dt className="text-gray-900 text-xl">Order ID: #1403</dt>
-              <button className="btn-black">Track Order</button>
+              <dt className="text-gray-900 text-base">
+                <span>Order ID: #{order.orderId} </span>
+                <span className="text-blue-700 cursor-pointer text-sm">
+                  Track
+                </span>
+              </dt>
+              <dt className="text-gray-900 text-base">
+                Payment Status: {order.status}
+              </dt>
+              <dt className="text-gray-900 text-base">
+                Amount: {numberFormat(order.amount)}
+              </dt>
             </dl>
             {products.map((product) => (
               <div
@@ -203,4 +222,17 @@ const Order = () => {
   );
 };
 
-export default Order;
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+  let order = await Order.findById(context.query.id);
+
+  return {
+    props: {
+      order: JSON.parse(JSON.stringify(order)),
+    },
+  };
+}
+
+export default UserOrder;
