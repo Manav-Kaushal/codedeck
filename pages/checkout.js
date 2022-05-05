@@ -10,10 +10,8 @@ import {
 import { SiPaytm } from "react-icons/si";
 import { numberFormat } from "@utils/helpers";
 import { EmptyCart } from "@components/EmptyCart";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import toast from "react-hot-toast";
+import Loader from "@components/Loader";
 
 const formReducer = (state, event) => {
   return {
@@ -28,8 +26,6 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
 
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
-
-  console.log(formData);
 
   const initiatePayment = async () => {
     let oid = Math.floor(Math.random() * Date.now());
@@ -75,16 +71,21 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         },
       },
     };
+    console.log(txnRes);
 
-    // initialze configuration using init method
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
+    if (txnRes.success) {
+      // initialze configuration using init method
+      window.Paytm.CheckoutJS.init(config)
+        .then(function onSuccess() {
+          // after successfully updating configuration, invoke JS Checkout
+          window.Paytm.CheckoutJS.invoke();
+        })
+        .catch(function onError(error) {
+          console.log("error => ", error);
+        });
+    } else {
+      toast.error(txnRes.error);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -114,7 +115,7 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         setRegion(pincodes[formData.zipcode][1]);
       }
     }
-    
+
     if (formData?.zipcode?.length === 6) {
       setCityState();
     } else {
@@ -145,18 +146,6 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
             Your Shopping Cart
           </h2>
-          {submitting && (
-            <div>
-              You are submitting the following:
-              <ul>
-                {Object.entries(formData).map(([name, value]) => (
-                  <li key={name}>
-                    <strong>{name}</strong>:{value.toString()}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16 mt-8">
               <section className="bg-white p-4 w-full shadow-md select-none">
@@ -448,7 +437,11 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                       className="group btn-black w-full flex items-center justify-center transition-200 space-x-4 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:border-gray-500 disabled:text-gray-300"
                       disabled={!areAllFieldsFilled}
                     >
-                      <span className="text-base">Pay</span>
+                      {submitting ? (
+                        <Loader />
+                      ) : (
+                        <span className="text-base">Pay</span>
+                      )}
                     </button>
                   </div>
                   <p className="group flex items-center space-x-1 text-xs my-2 font-semibold">
