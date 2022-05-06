@@ -36,7 +36,10 @@ const Login = () => {
     });
     let data = await res.json();
     if (data.success === true) {
-      localStorage.setItem("token", data.jwt);
+      localStorage.setItem(
+        "token",
+        JSON.stringify({ token: data.jwt, email: data.email })
+      );
       toast.success("Successfully logged in!");
       setEmail("");
       setPassword("");

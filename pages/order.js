@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Order from "../models/Order";
 import mongoose from "mongoose";
 import { numberFormat } from "@utils/helpers";
+import { useEffect } from "react";
 
 const defaultOptions = {
   loop: false,
@@ -15,10 +16,16 @@ const defaultOptions = {
   },
 };
 
-const UserOrder = ({ order }) => {
+const UserOrder = ({ order, clearCart }) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, emptyCart } = router.query;
   const products = order?.products;
+
+  useEffect(() => {
+    if (emptyCart == 1) {
+      clearCart();
+    }
+  }, []);
 
   return (
     <div className="relative">

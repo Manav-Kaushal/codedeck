@@ -162,16 +162,16 @@ export const Header = ({
                   </>
                 ) : (
                   <>
-                    <Link href="/auth/login">
-                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
-                        User
-                      </a>
-                    </Link>
-                    <Link href="/auth/register">
-                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
-                        Logout
-                      </a>
-                    </Link>
+                    <span className="text-sm font-medium text-gray-300 hover:text-white transition-200 cursor-default">
+                      {user.email}
+                    </span>
+
+                    <a
+                      className="text-sm font-medium text-gray-300 hover:text-white transition-200 cursor-pointer"
+                      onClick={() => logout()}
+                    >
+                      Logout
+                    </a>
                   </>
                 )}
               </div>
@@ -201,11 +201,9 @@ export const Header = ({
                   </>
                 ) : (
                   <>
-                    <Link href="/auth/login">
-                      <a className="text-sm font-medium text-gray-300 hover:text-white transition-200">
-                        User
-                      </a>
-                    </Link>
+                    <span className="text-sm font-medium text-gray-300 hover:text-white transition-200 cursor-default">
+                      {user.email}
+                    </span>
 
                     <a
                       className="text-sm font-medium text-gray-300 hover:text-white transition-200 cursor-pointer"

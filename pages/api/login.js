@@ -19,7 +19,7 @@ const handler = async (req, res) => {
           { expiresIn: "2d" }
         );
 
-        res.status(200).json({ success: true, jwt: token });
+        res.status(200).json({ success: true, jwt: token, email: user.email });
       } else {
         res.status(200).json({ success: false, error: "Invalid credentials!" });
       }

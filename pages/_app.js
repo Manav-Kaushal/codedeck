@@ -57,7 +57,6 @@ function MyApp({ Component, pageProps }) {
   }
 
   function clearCart() {
-    toast.success("Removed all items from cart!");
     setCart({});
     saveCartToLocalStorage({});
   }
@@ -95,9 +94,9 @@ function MyApp({ Component, pageProps }) {
       console.log(error);
       localStorage.removeItem("cart");
     }
-    let token = localStorage.getItem("token");
+    let token = JSON.parse(localStorage.getItem("token"));
     if (token) {
-      setUser({ value: token });
+      setUser({ value: token.token, email: token.email });
     }
     setKey(Math.random());
   }, [router.query]);
@@ -134,6 +133,7 @@ function MyApp({ Component, pageProps }) {
           />
         )}
         <Component
+          user={user}
           cart={cart}
           addToCart={addToCart}
           removeFromCart={removeFromCart}

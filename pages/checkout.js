@@ -20,7 +20,14 @@ const formReducer = (state, event) => {
   };
 };
 
-const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Checkout = ({
+  cart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  subTotal,
+  user,
+}) => {
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitting, setSubmitting] = useState(false);
 
@@ -33,12 +40,13 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
       cart,
       subTotal,
       oid,
-      email: formData.email,
+      email: user.value ? user.email : formData.email,
       name: formData.fullName,
       address: formData.address,
       zipcode: formData.zipcode,
       phone: formData.phone,
     };
+    console.log({ data });
 
     // Get a transaction token
     let res = await fetch(
@@ -71,7 +79,6 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         },
       },
     };
-    console.log(txnRes);
 
     if (txnRes.success) {
       // initialze configuration using init method
@@ -85,6 +92,7 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         });
     } else {
       toast.error(txnRes.error);
+      clearCart();
     }
   };
 
@@ -122,10 +130,10 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
       setCity("");
       setRegion("");
     }
-  }, [formData.zipcode]);
+  }, [user, formData.zipcode]);
 
   const areAllFieldsFilled =
-    formData.email?.length > 0 &&
+    // formData.email?.length > 0 &&
     formData.fullName?.length > 0 &&
     formData.address?.length > 0 &&
     formData.zipcode?.length == 6 &&
@@ -168,17 +176,30 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                           aria-hidden="true"
                         />
                       </div>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email || ""}
-                        onChange={handleChange}
-                        autoComplete="email"
-                        placeholder="you@example.com"
-                        className="text-gray-900 block w-full border-gray-300 rounded-md pl-10 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
-                        required
-                      />
+                      {user.value ? (
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={user.email}
+                          // onChange={handleChange}
+                          autoComplete="email"
+                          className="text-gray-900 block w-full border-gray-300 rounded-md pl-10 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+                          readOnly
+                        />
+                      ) : (
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email || ""}
+                          onChange={handleChange}
+                          autoComplete="email"
+                          placeholder="you@example.com"
+                          className="text-gray-900 block w-full border-gray-300 rounded-md pl-10 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+                          required
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

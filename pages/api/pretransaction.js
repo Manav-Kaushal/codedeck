@@ -13,10 +13,19 @@ const handler = async (req, res) => {
     for (let item in cart) {
       sumTotal += cart[item].price * cart[item].qty;
       product = await Product.findOne({ slug: item });
+      // Check if cart items are out of stock
+      if (product.availableQty < cart[item].qty) {
+        res.status(200).json({
+          success: false,
+          error:
+            "Some items in your cart went out of stock. Please try again!",
+        });
+      }
       if (product.price != cart[item].price) {
         res.status(200).json({
           success: false,
-          error: "Cart has been tampered. Please refresh and try again!",
+          error:
+            "Price of some items in your cart has changed. Please try again!",
         });
         return;
       }
@@ -24,12 +33,13 @@ const handler = async (req, res) => {
     if (sumTotal !== req.body.subTotal) {
       res.status(200).json({
         success: false,
-        error: "Cart has been tampered. Please refresh and try again!",
+        error:
+          "Price of some items in your cart has changed. Please try again!",
       });
       return;
     }
 
-    // Check if cart items are out of stock
+
 
     // Check if details provided are valid
 
